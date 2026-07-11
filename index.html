@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Money Map | The Night Crossing</title>
+    <meta name="description"
+        content="Personal finance coaching with Marcia. Budgeting, debt, investing and savings, charted like a night sky: fixed points you can navigate by.">
+    <meta property="og:title" content="My Money Map | The Night Crossing">
+    <meta property="og:description"
+        content="The night sky was the first map. Personal finance coaching with Marcia: budgeting, debt and investing, charted properly.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="assets/images/marcia_portrait.jpeg">
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&family=Spline+Sans+Mono:ital,wght@0,300..700;1,300..700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body data-lang="en">
+
+    <!-- Sky: two gradient plates crossfaded by scroll, stars drawn on canvas above them -->
+    <div class="sky-plate sky-night" aria-hidden="true"></div>
+    <div class="sky-plate sky-dawn" id="skyDawn" aria-hidden="true"></div>
+    <canvas id="sky" class="sky-canvas" aria-hidden="true"></canvas>
+
+    <!-- Loader -->
+    <div class="loader" id="loader" aria-hidden="true">
+        <div class="loader-inner">
+            <span class="loader-word">My&nbsp;Money&nbsp;Map</span>
+            <span class="loader-star" aria-hidden="true">✦</span>
+        </div>
+    </div>
+
+    <!-- ================= NAV ================= -->
+    <header class="nav" id="nav">
+        <a href="#top" class="nav-brand">My&nbsp;Money&nbsp;Map<span class="brand-star">✦</span></a>
+        <nav class="nav-links" aria-label="Primary">
+            <a href="#constellations" class="nav-link" data-i18n="nav.services">Constellations</a>
+            <a href="#instrument" class="nav-link" data-i18n="nav.instrument">Instrument</a>
+            <a href="#navigator" class="nav-link" data-i18n="nav.about">Navigator</a>
+            <a href="#firstlight" class="nav-link" data-i18n="nav.contact">First light</a>
+        </nav>
+        <div class="nav-right">
+            <div class="lang-switch" role="group" aria-label="Language">
+                <button class="lang-btn active" data-lang="en" aria-pressed="true">EN</button>
+                <span class="lang-sep" aria-hidden="true">/</span>
+                <button class="lang-btn" data-lang="pt" aria-pressed="false">PT</button>
+            </div>
+            <a href="#firstlight" class="btn-solid btn-nav" data-i18n="nav.cta">Book a free call</a>
+        </div>
+    </header>
+
+    <main id="top">
+
+        <!-- ================= HERO · POLARIS ================= -->
+        <section class="hero on-dark" id="hero">
+            <div class="hero-inner">
+                <p class="kicker hero-kicker mono">
+                    <span class="kicker-star" aria-hidden="true">✦</span>
+                    <span data-i18n="hero.kicker">Polaris · the fixed point · personal finance coaching</span>
+                </p>
+
+                <h1 class="hero-title">
+                    <span class="line"><span class="line-inner" data-i18n="hero.l1">The night sky</span></span>
+                    <span class="line"><span class="line-inner" data-i18n="hero.l2">was the first</span></span>
+                    <span class="line"><span class="line-inner"><em class="accent-dark" data-i18n="hero.l3">map.</em></span></span>
+                </h1>
+
+                <div class="hero-foot">
+                    <p class="hero-desc" data-i18n="hero.desc">
+                        Money can feel like open water after dark. Marcia teaches you to steer by
+                        fixed points: a budget that holds, debt that shrinks, investments that
+                        quietly compound. Personal finance coaching, charted properly.
+                    </p>
+                    <div class="hero-ctas">
+                        <a href="#instrument" class="btn-solid" data-i18n="hero.cta1">Chart your course</a>
+                        <a href="#navigator" class="btn-ghost" data-i18n="hero.cta2">Meet the navigator</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-scroll mono" aria-hidden="true">
+                <span data-i18n="hero.scroll">Begin the crossing</span>
+                <span class="hero-scroll-line"></span>
+            </div>
+        </section>
+
+        <!-- ================= 01 CONSTELLATIONS (services) ================= -->
+        <section class="chapter constellations on-dark" id="constellations">
+            <p class="kicker mono reveal">
+                <span class="kicker-star" aria-hidden="true">✦</span>
+                <span data-i18n="services.kicker">The constellations · four fixed points</span>
+            </p>
+
+            <h2 class="chapter-title reveal">
+                <span data-i18n="services.t1">Four constellations,</span><br>
+                <em class="accent-dark" data-i18n="services.t2">one clear sky.</em>
+            </h2>
+
+            <p class="chapter-sub reveal" data-i18n="services.sub">
+                Every route Marcia charts uses the same four fixed points. Learn to read
+                them, and the dark stops being frightening.
+            </p>
+
+            <ul class="constellation-grid">
+                <li class="constellation-card reveal">
+                    <svg class="constellation" viewBox="0 0 120 100" aria-hidden="true">
+                        <path class="c-line" d="M28 34 L60 18 L92 30 M28 34 L24 62 M92 30 L88 58 M60 18 L58 84" />
+                        <circle class="c-star" cx="60" cy="18" r="3.4" />
+                        <circle class="c-star" cx="28" cy="34" r="2.6" />
+                        <circle class="c-star" cx="92" cy="30" r="2.6" />
+                        <circle class="c-star" cx="24" cy="62" r="2.2" />
+                        <circle class="c-star" cx="88" cy="58" r="2.2" />
+                        <circle class="c-star c-star-major" cx="58" cy="84" r="3" />
+                    </svg>
+                    <p class="c-coord mono" aria-hidden="true">α 14h 50m · δ −16° 02′</p>
+                    <h3 class="c-name"><span data-i18n="services.1.const">The Scales</span></h3>
+                    <p class="c-role mono" data-i18n="services.1.name">Budgeting &amp; planning</p>
+                    <p class="c-desc" data-i18n="services.1.desc">A realistic spending plan that balances
+                        the life you have now against the goals you refuse to give up.</p>
+                </li>
+
+                <li class="constellation-card reveal">
+                    <svg class="constellation" viewBox="0 0 120 100" aria-hidden="true">
+                        <path class="c-line" d="M60 14 L60 74 M44 28 L76 28 M60 74 L38 58 M60 74 L82 58" />
+                        <circle class="c-star" cx="60" cy="14" r="3" />
+                        <circle class="c-star" cx="44" cy="28" r="2.2" />
+                        <circle class="c-star" cx="76" cy="28" r="2.2" />
+                        <circle class="c-star c-star-major" cx="60" cy="74" r="3.4" />
+                        <circle class="c-star" cx="38" cy="58" r="2.6" />
+                        <circle class="c-star" cx="82" cy="58" r="2.6" />
+                    </svg>
+                    <p class="c-coord mono" aria-hidden="true">α 08h 10m · δ −47° 20′</p>
+                    <h3 class="c-name"><span data-i18n="services.2.const">The Anchor</span></h3>
+                    <p class="c-role mono" data-i18n="services.2.name">Debt management</p>
+                    <p class="c-desc" data-i18n="services.2.desc">Weigh anchor. A clear order for clearing
+                        what you owe, so the interest stops steering your life.</p>
+                </li>
+
+                <li class="constellation-card reveal">
+                    <svg class="constellation" viewBox="0 0 120 100" aria-hidden="true">
+                        <path class="c-line" d="M18 64 L36 58 L52 50 L68 54 L88 46 L92 68 L70 74 L68 54" />
+                        <circle class="c-star" cx="18" cy="64" r="2.6" />
+                        <circle class="c-star" cx="36" cy="58" r="2.2" />
+                        <circle class="c-star" cx="52" cy="50" r="2.6" />
+                        <circle class="c-star" cx="68" cy="54" r="2.2" />
+                        <circle class="c-star c-star-major" cx="88" cy="46" r="3.2" />
+                        <circle class="c-star" cx="92" cy="68" r="2.4" />
+                        <circle class="c-star" cx="70" cy="74" r="2.4" />
+                    </svg>
+                    <p class="c-coord mono" aria-hidden="true">α 11h 03m · δ +61° 45′</p>
+                    <h3 class="c-name"><span data-i18n="services.3.const">The Plough</span></h3>
+                    <p class="c-role mono" data-i18n="services.3.name">Investing basics</p>
+                    <p class="c-desc" data-i18n="services.3.desc">The Plough points to Polaris. A diversified
+                        portfolio, explained in plain words, pointing the same way for decades.</p>
+                </li>
+
+                <li class="constellation-card reveal">
+                    <svg class="constellation" viewBox="0 0 120 100" aria-hidden="true">
+                        <path class="c-line" d="M86 40 L60 50 M60 50 L48 26 M60 50 L40 66 M60 50 L34 60 M34 60 L18 52 M34 60 L24 78" />
+                        <circle class="c-star c-star-major" cx="86" cy="40" r="3.2" />
+                        <circle class="c-star" cx="60" cy="50" r="2.8" />
+                        <circle class="c-star" cx="48" cy="26" r="2.4" />
+                        <circle class="c-star" cx="40" cy="66" r="2.2" />
+                        <circle class="c-star" cx="34" cy="60" r="2.2" />
+                        <circle class="c-star" cx="18" cy="52" r="2.4" />
+                        <circle class="c-star" cx="24" cy="78" r="2.4" />
+                    </svg>
+                    <p class="c-coord mono" aria-hidden="true">α 19h 50m · δ +08° 52′</p>
+                    <h3 class="c-name"><span data-i18n="services.4.const">The Swallow</span></h3>
+                    <p class="c-role mono" data-i18n="services.4.name">Miles &amp; discounts</p>
+                    <p class="c-desc" data-i18n="services.4.desc">Fly further for less. Points, miles and the
+                        quiet discounts hiding in the spending you already do.</p>
+                </li>
+            </ul>
+        </section>
+
+        <!-- ================= DAYLIGHT WRAP: chart paper over the night ================= -->
+        <div class="daylight on-light">
+
+            <!-- ================= 02 INSTRUMENT · VEGA ================= -->
+            <section class="chapter instrument" id="instrument">
+                <p class="kicker mono reveal">
+                    <span class="kicker-star" aria-hidden="true">✦</span>
+                    <span data-i18n="instrument.kicker">Vega · the instrument</span>
+                </p>
+
+                <div class="instrument-head">
+                    <div class="instrument-head-copy">
+                        <h2 class="chapter-title reveal">
+                            <span data-i18n="instrument.t1">Ten years,</span><br>
+                            <em class="accent-light" data-i18n="instrument.t2">plotted tonight.</em>
+                        </h2>
+                        <p class="chapter-sub reveal" data-i18n="instrument.sub">
+                            Slide the dial. A monthly amount, kept up for ten years at a steady 8%,
+                            plots a curve you can navigate by.
+                        </p>
+                    </div>
+
+                    <figure class="instrument-figure reveal">
+                        <div class="reveal-img">
+                            <img src="assets/images/planner_flatlay.jpeg"
+                                alt="The Money Map planner open at the monthly net worth tracker, with coffee and calculator"
+                                class="instrument-img" loading="lazy">
+                        </div>
+                        <figcaption class="mono" data-i18n="instrument.figcap">Field notes: the Money Map planner</figcaption>
+                    </figure>
+                </div>
+
+                <div class="panel reveal" id="chartPanel">
+                    <div class="panel-chart">
+                        <svg class="starchart" id="starChart" viewBox="0 0 720 400" role="img"
+                            aria-label="Projected growth of monthly savings over ten years">
+                            <g id="chartGrid"></g>
+                            <path class="chart-line" id="chartLine" d="" />
+                            <g id="chartStars"></g>
+                            <g id="chartEndLabel"></g>
+                        </svg>
+                    </div>
+
+                    <div class="panel-controls">
+                        <div class="dial">
+                            <label for="amountRange" class="mono dial-label" data-i18n="instrument.permonth">Set aside per month</label>
+                            <span class="dial-value" id="dialValue">£250</span>
+                            <input type="range" id="amountRange" min="0" max="1000" step="10" value="250"
+                                aria-label="Monthly amount">
+                            <div class="dial-scale mono" aria-hidden="true">
+                                <span>£0</span><span>£250</span><span>£500</span><span>£750</span><span>£1k</span>
+                            </div>
+                        </div>
+
+                        <div class="projection">
+                            <p class="projection-note" data-i18n="instrument.note">
+                                After ten years of that habit, the chart reads
+                            </p>
+                            <p class="projection-value"><span class="proj-glyph" aria-hidden="true">▲</span>
+                                <span id="projValue">£46,041</span></p>
+                            <p class="projection-foot" data-i18n="instrument.foot">
+                                8% is a conservative take on long-term stock market history: the S&amp;P 500 has
+                                averaged around 10% a year over the past 50 years. Illustration only, not
+                                financial advice, and past performance doesn't guarantee future returns.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= 03 NAVIGATOR · SIRIUS ================= -->
+            <section class="chapter navigator" id="navigator">
+                <p class="kicker mono reveal">
+                    <span class="kicker-star" aria-hidden="true">✦</span>
+                    <span data-i18n="about.kicker">Sirius · the navigator</span>
+                </p>
+
+                <div class="about-grid">
+                    <div class="about-media">
+                        <div class="reveal-img">
+                            <img src="assets/images/marcia_portrait.jpeg"
+                                alt="Marcia, certified personal finance consultant" class="about-img">
+                        </div>
+                        <div class="about-media-offset reveal-img">
+                            <img src="assets/images/marcia_standing.jpeg"
+                                alt="Marcia standing, ready to guide your financial journey" class="about-img"
+                                loading="lazy">
+                        </div>
+                        <span class="about-badge mono">C.P.F.E.®&nbsp;certified</span>
+                    </div>
+
+                    <div class="about-copy">
+                        <h2 class="chapter-title reveal">
+                            <span data-i18n="about.t1">Charts are paper.</span><br>
+                            <em class="accent-light" data-i18n="about.t2">Marcia is the navigator.</em>
+                        </h2>
+                        <p class="about-desc reveal" data-i18n="about.desc">
+                            Financial freedom is not really about the numbers. It is the confidence to
+                            live the life you want. As a Certified Personal Finance Consultant working
+                            between the UK and Brazil, Marcia bridges the gap between complex financial
+                            concepts and the habits you keep on an ordinary Tuesday.
+                        </p>
+                        <ul class="creds">
+                            <li class="cred reveal"><span class="cred-star" aria-hidden="true">✦</span>
+                                <span data-i18n="about.c1">Certified Personal Finance Consultant (C.P.F.E.®)</span></li>
+                            <li class="cred reveal"><span class="cred-star" aria-hidden="true">✦</span>
+                                <span data-i18n="about.c2">Member of the Personal Finance Society (UK) and ABEFIN (Brazil)</span></li>
+                            <li class="cred reveal"><span class="cred-star" aria-hidden="true">✦</span>
+                                <span data-i18n="about.c3">Cross-border money mentoring sessions</span></li>
+                            <li class="cred reveal"><span class="cred-star" aria-hidden="true">✦</span>
+                                <span data-i18n="about.c4">Approachable, inclusive, non-judgemental</span></li>
+                            <li class="cred reveal"><span class="cred-star" aria-hidden="true">✦</span>
+                                <span data-i18n="about.c5">Tailored roadmaps for every client</span></li>
+                        </ul>
+                        <a href="#firstlight" class="btn-solid reveal" data-i18n="about.cta">Book a free discovery call</a>
+                    </div>
+                </div>
+            </section>
+
+        </div><!-- /daylight -->
+
+        <!-- ================= 04 FIRST LIGHT · contact ================= -->
+        <section class="chapter firstlight on-dark" id="firstlight">
+            <p class="kicker mono reveal">
+                <span class="kicker-star" aria-hidden="true">✦</span>
+                <span data-i18n="contact.kicker">Civil dawn 04:58 · first light</span>
+            </p>
+
+            <h2 class="chapter-title reveal">
+                <span data-i18n="contact.t1">The sky is lightest</span><br>
+                <em class="accent-dark" data-i18n="contact.t2">just before you start.</em>
+            </h2>
+
+            <p class="chapter-sub reveal" data-i18n="contact.sub">
+                Send a message and Marcia will reply within 24 hours.
+            </p>
+
+            <div class="contact-grid">
+                <figure class="contact-figure reveal">
+                    <div class="reveal-img">
+                        <img src="assets/images/marcia_coffee.jpeg"
+                            alt="Marcia at her desk with a coffee, ready to talk" class="contact-img"
+                            loading="lazy">
+                    </div>
+                    <figcaption class="mono" data-i18n="contact.figcap">Coffee first. Then the crossing.</figcaption>
+                </figure>
+
+                <form class="contact-form reveal" id="contactForm" novalidate>
+                    <div class="field">
+                        <label for="contactName" class="mono" data-i18n="contact.name">Your name</label>
+                        <input type="text" id="contactName" autocomplete="name" required>
+                    </div>
+                    <div class="field">
+                        <label for="contactEmail" class="mono" data-i18n="contact.email">Your email</label>
+                        <input type="email" id="contactEmail" autocomplete="email" required>
+                    </div>
+                    <div class="field field-wide">
+                        <label for="contactMessage" class="mono" data-i18n="contact.message">Your goal</label>
+                        <textarea id="contactMessage" rows="4" required
+                            data-i18n-placeholder="contact.placeholder"
+                            placeholder="e.g. 'Start investing', 'Travel planning'"></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-solid" id="submitBtn"
+                            data-i18n="contact.submit">Send message</button>
+                        <p class="form-msg mono" id="formMsg" role="status"></p>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="footer on-dark">
+        <div class="footer-top">
+            <span class="footer-brand">My&nbsp;Money&nbsp;Map<span class="brand-star">✦</span></span>
+            <p class="footer-tag" data-i18n="footer.tag">Empowering your financial future.</p>
+        </div>
+        <div class="footer-bottom mono">
+            <span>myfinancemap.uk</span>
+            <span class="footer-social">
+                <a href="https://www.linkedin.com/in/marciapregal/" target="_blank" rel="noopener">LinkedIn</a>
+                <span aria-hidden="true">&ensp;·&ensp;</span>
+                <a href="https://www.instagram.com/myfinancemap.uk/" target="_blank" rel="noopener">Instagram</a>
+            </span>
+            <span data-i18n="footer.copy">© 2026 My Money Map. All rights reserved.</span>
+            <span class="footer-credit" data-i18n="footer.credit">Designed and built by Claude Fable 5</span>
+        </div>
+    </footer>
+
+    <!-- Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
