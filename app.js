@@ -1,7 +1,9 @@
 /* ============================================================
-   MY MONEY MAP — The Night Crossing
-   Persistent WebGL sky · armillary sphere · scroll-driven dawn
-   GSAP choreography · ten-year star chart · EN/PT i18n
+   MY MONEY MAP — light-first redesign
+   Hero armillary (three.js, scoped to hero, paused off-screen)
+   GSAP reveals · ten-year growth chart · EN/PT i18n
+   Native scrolling throughout: no scroll hijack, no scrubbed
+   full-page effects.
    ============================================================ */
 
 (() => {
@@ -13,57 +15,53 @@
     /* ================= i18n ================= */
     const translations = {
         en: {
-            "nav.services": "Constellations",
-            "nav.instrument": "Instrument",
-            "nav.about": "Navigator",
-            "nav.contact": "First light",
+            "nav.services": "Services",
+            "nav.instrument": "Calculator",
+            "nav.about": "About",
+            "nav.contact": "Contact",
             "nav.cta": "Book a free call",
-            "hero.kicker": "Polaris · the fixed point · personal finance coaching",
-            "hero.l1": "The night sky",
-            "hero.l2": "was the first",
-            "hero.l3": "map.",
-            "hero.desc": "Money can feel like open water after dark. Marcia teaches you to steer by fixed points: a budget that holds, debt that shrinks, investments that quietly compound. Personal finance coaching, charted properly.",
-            "hero.cta1": "Chart your course",
-            "hero.cta2": "Meet the navigator",
-            "hero.scroll": "Begin the crossing",
-            "services.kicker": "The constellations · four fixed points",
-            "services.t1": "Four constellations,",
-            "services.t2": "one clear sky.",
-            "services.sub": "Every route Marcia charts uses the same four fixed points. Learn to read them, and the dark stops being frightening.",
-            "services.1.const": "The Scales",
+            "hero.kicker": "Personal finance coaching · UK & Brazil",
+            "hero.l1": "Where does",
+            "hero.l2": "your money",
+            "hero.l3": "actually go?",
+            "hero.desc": "Marcia is a certified personal finance consultant. She helps you build a budget that holds, clear debt faster and start investing, in plain words, with a plan you can actually follow.",
+            "hero.cta1": "Book a free call",
+            "hero.cta2": "See how it works",
+            "hero.scroll": "Scroll to explore",
+            "services.kicker": "What Marcia helps with",
+            "services.t1": "Four services,",
+            "services.t2": "one plan.",
+            "services.sub": "Every client starts in a different place. These are the four areas Marcia covers, and your plan can mix all of them.",
             "services.1.name": "Budgeting & planning",
-            "services.1.desc": "A realistic spending plan that balances the life you have now against the goals you refuse to give up.",
-            "services.2.const": "The Anchor",
+            "services.1.desc": "A realistic spending plan that fits your life now and still protects your long-term goals.",
             "services.2.name": "Debt management",
-            "services.2.desc": "Weigh anchor. A clear order for clearing what you owe, so the interest stops steering your life.",
-            "services.3.const": "The Plough",
+            "services.2.desc": "A clear order for paying off what you owe, so interest stops eating your income.",
             "services.3.name": "Investing basics",
-            "services.3.desc": "The Plough points to Polaris. A diversified portfolio, explained in plain words, pointing the same way for decades.",
-            "services.4.const": "The Swallow",
+            "services.3.desc": "The stock market explained in plain words, and a diversified portfolio you understand.",
             "services.4.name": "Miles & discounts",
-            "services.4.desc": "Fly further for less. Points, miles and the quiet discounts hiding in the spending you already do.",
-            "instrument.kicker": "Vega · the instrument",
-            "instrument.t1": "Ten years,",
-            "instrument.t2": "plotted tonight.",
-            "instrument.sub": "Slide the dial. A monthly amount, kept up for ten years at a steady 8%, plots a curve you can navigate by.",
-            "instrument.figcap": "Field notes: the Money Map planner",
+            "services.4.desc": "Get more from the spending you already do: points, miles and everyday savings.",
+            "instrument.kicker": "Try it yourself",
+            "instrument.t1": "How much could",
+            "instrument.t2": "your money grow?",
+            "instrument.sub": "Slide the dial to set a monthly amount. The chart shows what it could become in ten years at a steady 8% a year.",
+            "instrument.figcap": "The Money Map planner",
             "instrument.permonth": "Set aside per month",
-            "instrument.note": "After ten years of that habit, the chart reads",
+            "instrument.note": "After ten years, that habit could be worth",
             "instrument.endsub": "after 10 years",
             "instrument.foot": "8% is a conservative take on long-term stock market history: the S&P 500 has averaged around 10% a year over the past 50 years. Illustration only, not financial advice, and past performance doesn't guarantee future returns.",
-            "about.kicker": "Sirius · the navigator",
-            "about.t1": "Charts are paper.",
-            "about.t2": "Marcia is the navigator.",
-            "about.desc": "Financial freedom is not really about the numbers. It is the confidence to live the life you want. As a Certified Personal Finance Consultant working between the UK and Brazil, Marcia bridges the gap between complex financial concepts and the habits you keep on an ordinary Tuesday.",
+            "about.kicker": "About Marcia",
+            "about.t1": "Your partner in",
+            "about.t2": "wealth building.",
+            "about.desc": "Financial freedom is not really about the numbers. It is the confidence to live the life you want. As a Certified Personal Finance Consultant working between the UK and Brazil, Marcia turns complex financial ideas into simple daily habits.",
             "about.c1": "Certified Personal Finance Consultant (C.P.F.E.®)",
             "about.c2": "Member of the Personal Finance Society (UK) and ABEFIN (Brazil)",
             "about.c3": "Cross-border money mentoring sessions",
             "about.c4": "Approachable, inclusive, non-judgemental",
             "about.c5": "Tailored roadmaps for every client",
             "about.cta": "Book a free discovery call",
-            "contact.kicker": "Civil dawn 04:58 · first light",
-            "contact.t1": "The sky is lightest",
-            "contact.t2": "just before you start.",
+            "contact.kicker": "Get in touch",
+            "contact.t1": "Ready to make",
+            "contact.t2": "a start?",
             "contact.sub": "Send a message and Marcia will reply within 24 hours.",
             "contact.name": "Your name",
             "contact.email": "Your email",
@@ -73,64 +71,59 @@
             "contact.sending": "Sending…",
             "contact.success": "Thank you. Marcia will be in touch soon.",
             "contact.error": "Something went wrong. Please try again or email directly.",
-            "contact.figcap": "Coffee first. Then the crossing.",
-            "route.here": "you are here",
+            "contact.figcap": "Let's start growing your money.",
             "footer.tag": "Empowering your financial future.",
             "footer.copy": "© 2026 My Money Map. All rights reserved.",
             "footer.credit": "Designed and built by Claude Fable 5"
         },
         pt: {
-            "nav.services": "Constelações",
-            "nav.instrument": "Instrumento",
-            "nav.about": "Navegadora",
-            "nav.contact": "Primeira luz",
+            "nav.services": "Serviços",
+            "nav.instrument": "Calculadora",
+            "nav.about": "Sobre",
+            "nav.contact": "Contato",
             "nav.cta": "Agende uma conversa",
-            "hero.kicker": "Polaris · o ponto fixo · consultoria financeira pessoal",
-            "hero.l1": "O céu noturno",
-            "hero.l2": "foi o primeiro",
-            "hero.l3": "mapa.",
-            "hero.desc": "Dinheiro pode parecer mar aberto depois do anoitecer. A Marcia ensina você a navegar por pontos fixos: um orçamento que se sustenta, dívidas que encolhem, investimentos que crescem em silêncio. Consultoria financeira pessoal, traçada como deve ser.",
-            "hero.cta1": "Trace sua rota",
-            "hero.cta2": "Conheça a navegadora",
-            "hero.scroll": "Comece a travessia",
-            "services.kicker": "As constelações · quatro pontos fixos",
-            "services.t1": "Quatro constelações,",
-            "services.t2": "um céu limpo.",
-            "services.sub": "Toda rota que a Marcia traça usa os mesmos quatro pontos fixos. Aprenda a lê-los e o escuro deixa de assustar.",
-            "services.1.const": "A Balança",
+            "hero.kicker": "Consultoria financeira pessoal · Reino Unido & Brasil",
+            "hero.l1": "Para onde vai",
+            "hero.l2": "o seu dinheiro,",
+            "hero.l3": "de verdade?",
+            "hero.desc": "A Marcia é consultora de finanças pessoais certificada. Ela ajuda você a montar um orçamento que funciona, quitar dívidas mais rápido e começar a investir, em palavras simples e com um plano que dá para seguir.",
+            "hero.cta1": "Agende uma conversa",
+            "hero.cta2": "Veja como funciona",
+            "hero.scroll": "Role para explorar",
+            "services.kicker": "Como a Marcia ajuda",
+            "services.t1": "Quatro serviços,",
+            "services.t2": "um plano.",
+            "services.sub": "Cada cliente começa de um ponto diferente. Estas são as quatro áreas que a Marcia cobre, e o seu plano pode combinar todas elas.",
             "services.1.name": "Orçamento & planejamento",
-            "services.1.desc": "Um plano de gastos realista, que equilibra a vida que você tem hoje com os objetivos que você se recusa a abandonar.",
-            "services.2.const": "A Âncora",
+            "services.1.desc": "Um plano de gastos realista, que cabe na sua vida de hoje e ainda protege seus objetivos de longo prazo.",
             "services.2.name": "Gestão de dívidas",
-            "services.2.desc": "Âncora levantada. Uma ordem clara para quitar o que você deve, para os juros pararem de comandar a sua vida.",
-            "services.3.const": "O Arado",
+            "services.2.desc": "Uma ordem clara para quitar o que você deve, para os juros pararem de corroer a sua renda.",
             "services.3.name": "Investimentos para iniciantes",
-            "services.3.desc": "O Arado aponta para a Polaris. Uma carteira diversificada, explicada em palavras simples, apontando na mesma direção por décadas.",
-            "services.4.const": "A Andorinha",
+            "services.3.desc": "O mercado financeiro explicado em palavras simples, e uma carteira diversificada que você entende.",
             "services.4.name": "Milhas & descontos",
-            "services.4.desc": "Voe mais longe gastando menos. Pontos, milhas e os descontos discretos escondidos nos gastos que você já tem.",
-            "instrument.kicker": "Vega · o instrumento",
-            "instrument.t1": "Dez anos,",
-            "instrument.t2": "traçados hoje à noite.",
-            "instrument.sub": "Deslize o medidor. Um valor mensal, mantido por dez anos a 8% ao ano, desenha uma curva pela qual você pode navegar.",
-            "instrument.figcap": "Notas de campo: o planner Money Map",
+            "services.4.desc": "Aproveite melhor os gastos que você já tem: pontos, milhas e economias no dia a dia.",
+            "instrument.kicker": "Experimente",
+            "instrument.t1": "Quanto o seu dinheiro",
+            "instrument.t2": "poderia crescer?",
+            "instrument.sub": "Deslize o controle para definir um valor mensal. O gráfico mostra o que ele pode virar em dez anos, com 8% ao ano.",
+            "instrument.figcap": "O planner Money Map",
             "instrument.permonth": "Guardado por mês",
-            "instrument.note": "Depois de dez anos desse hábito, o mapa mostra",
+            "instrument.note": "Depois de dez anos, esse hábito pode valer",
             "instrument.endsub": "após 10 anos",
             "instrument.foot": "8% é uma estimativa conservadora baseada no histórico de longo prazo do mercado de ações: o S&P 500 rendeu em média cerca de 10% ao ano nos últimos 50 anos. Apenas ilustrativo, não é aconselhamento financeiro, e rentabilidade passada não garante retornos futuros.",
-            "about.kicker": "Sirius · a navegadora",
-            "about.t1": "Mapas são papel.",
-            "about.t2": "A Marcia é a navegadora.",
-            "about.desc": "Liberdade financeira não é só sobre números. É a confiança de viver a vida que você quer. Como Consultora de Finanças Pessoais Certificada, atuando entre o Reino Unido e o Brasil, a Marcia conecta conceitos financeiros complexos aos hábitos que você mantém numa terça-feira qualquer.",
+            "about.kicker": "Sobre a Marcia",
+            "about.t1": "Sua parceira na",
+            "about.t2": "construção de patrimônio.",
+            "about.desc": "Liberdade financeira não é só sobre números. É a confiança de viver a vida que você quer. Como Consultora de Finanças Pessoais Certificada, atuando entre o Reino Unido e o Brasil, a Marcia transforma ideias financeiras complexas em hábitos simples do dia a dia.",
             "about.c1": "Consultora de Finanças Pessoais Certificada (C.P.F.E.®)",
             "about.c2": "Membro da Personal Finance Society (Reino Unido) e da ABEFIN (Brasil)",
             "about.c3": "Mentorias financeiras internacionais, entre países",
             "about.c4": "Acolhedora, inclusiva e sem julgamentos",
             "about.c5": "Roteiros personalizados para cada cliente",
             "about.cta": "Agende uma conversa gratuita",
-            "contact.kicker": "Amanhecer civil 04:58 · primeira luz",
-            "contact.t1": "O céu fica mais claro",
-            "contact.t2": "pouco antes de você começar.",
+            "contact.kicker": "Fale com a Marcia",
+            "contact.t1": "Pronto para",
+            "contact.t2": "começar?",
             "contact.sub": "Envie uma mensagem e a Marcia responde em até 24 horas.",
             "contact.name": "Seu nome",
             "contact.email": "Seu e-mail",
@@ -140,8 +133,7 @@
             "contact.sending": "Enviando…",
             "contact.success": "Obrigada. A Marcia entrará em contato em breve.",
             "contact.error": "Algo deu errado. Tente novamente ou envie um e-mail diretamente.",
-            "contact.figcap": "Primeiro o café. Depois, a travessia.",
-            "route.here": "você está aqui",
+            "contact.figcap": "Vamos começar a fazer o seu dinheiro crescer.",
             "footer.tag": "Fortalecendo o seu futuro financeiro.",
             "footer.copy": "© 2026 My Money Map. Todos os direitos reservados.",
             "footer.credit": "Desenhado e construído por Claude Fable 5"
@@ -170,7 +162,6 @@
             btn.setAttribute("aria-pressed", String(active));
         });
         if (window.__renderChart) window.__renderChart(true);
-        if (window.__buildRoute) window.__buildRoute();
     }
 
     document.querySelectorAll(".lang-btn").forEach(btn =>
@@ -178,110 +169,23 @@
 
     applyLang(currentLang);
 
-    /* ================= Smooth scroll (Lenis) ================= */
-    let lenis = null;
-    if (!prefersReduced && typeof Lenis !== "undefined") {
-        lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
-        window.__lenis = lenis;
-        lenis.on("scroll", () => { if (window.ScrollTrigger) ScrollTrigger.update(); });
-        gsap.ticker.add(t => lenis.raf(t * 1000));
-        gsap.ticker.lagSmoothing(0);
-
-        document.querySelectorAll('a[href^="#"]').forEach(a => {
-            a.addEventListener("click", e => {
-                const target = document.querySelector(a.getAttribute("href"));
-                if (target) { e.preventDefault(); lenis.scrollTo(target, { offset: -70 }); }
-            });
-        });
-    }
-
-    /* ================= WebGL sky ================= */
-    const skyCanvas = document.getElementById("sky");
-    const skyState = { fade: 1, armOpacity: 1 };
-
-    if (skyCanvas && typeof THREE !== "undefined") {
-        const renderer = new THREE.WebGLRenderer({ canvas: skyCanvas, alpha: true, antialias: true });
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    /* ================= Hero armillary sphere (scoped, paused off-screen) ================= */
+    const heroCanvas = document.getElementById("heroCanvas");
+    if (heroCanvas && typeof THREE !== "undefined") {
+        const hero = document.getElementById("hero");
+        const renderer = new THREE.WebGLRenderer({ canvas: heroCanvas, alpha: true, antialias: true });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
 
         const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 200);
-        camera.position.set(0, 0, 1);
+        const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+        camera.position.set(0, 0, 34);
 
-        /* ---- Starfield: instanced points with twinkle shader ---- */
-        const STAR_COUNT = window.innerWidth < 720 ? 450 : 950;
-        const positions = new Float32Array(STAR_COUNT * 3);
-        const sizes = new Float32Array(STAR_COUNT);
-        const phases = new Float32Array(STAR_COUNT);
-        const colors = new Float32Array(STAR_COUNT * 3);
+        // Line-art instrument in light-surface colours: slate + amber deep
+        const slateMat = new THREE.LineBasicMaterial({ color: 0x3A4A5F, transparent: true, opacity: 0.4 });
+        const accentMat = new THREE.LineBasicMaterial({ color: 0xB87515, transparent: true, opacity: 0.8 });
+        const softMat = new THREE.LineBasicMaterial({ color: 0x6B5B8A, transparent: true, opacity: 0.35 });
 
-        const cream = new THREE.Color("#FAF6EF");
-        const amber = new THREE.Color("#E8A33D");
-        const dusk = new THREE.Color("#8E7FB0");
-
-        for (let s = 0; s < STAR_COUNT; s++) {
-            positions[s * 3] = (Math.random() - 0.5) * 130;
-            positions[s * 3 + 1] = (Math.random() - 0.5) * 80;
-            positions[s * 3 + 2] = -12 - Math.random() * 60;
-            sizes[s] = 0.6 + Math.pow(Math.random(), 2.4) * 2.6;
-            phases[s] = Math.random() * Math.PI * 2;
-            const r = Math.random();
-            const c = r < 0.82 ? cream : (r < 0.93 ? amber : dusk);
-            colors[s * 3] = c.r; colors[s * 3 + 1] = c.g; colors[s * 3 + 2] = c.b;
-        }
-
-        const starGeo = new THREE.BufferGeometry();
-        starGeo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-        starGeo.setAttribute("aSize", new THREE.BufferAttribute(sizes, 1));
-        starGeo.setAttribute("aPhase", new THREE.BufferAttribute(phases, 1));
-        starGeo.setAttribute("aColor", new THREE.BufferAttribute(colors, 3));
-
-        const starMat = new THREE.ShaderMaterial({
-            transparent: true,
-            depthWrite: false,
-            uniforms: {
-                uTime: { value: 0 },
-                uFade: { value: 1 },
-                uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) }
-            },
-            vertexShader: `
-                attribute float aSize;
-                attribute float aPhase;
-                attribute vec3 aColor;
-                uniform float uTime;
-                uniform float uPixelRatio;
-                varying float vTwinkle;
-                varying vec3 vColor;
-                void main() {
-                    vColor = aColor;
-                    vTwinkle = 0.65 + 0.35 * sin(uTime * (0.6 + aPhase * 0.25) + aPhase * 7.0);
-                    vec4 mv = modelViewMatrix * vec4(position, 1.0);
-                    gl_PointSize = aSize * uPixelRatio * (36.0 / -mv.z);
-                    gl_Position = projectionMatrix * mv;
-                }`,
-            fragmentShader: `
-                uniform float uFade;
-                varying float vTwinkle;
-                varying vec3 vColor;
-                void main() {
-                    vec2 uv = gl_PointCoord - 0.5;
-                    float d = length(uv);
-                    float glow = smoothstep(0.5, 0.02, d);
-                    float core = smoothstep(0.16, 0.0, d);
-                    float a = (glow * 0.5 + core) * vTwinkle * uFade;
-                    if (a < 0.01) discard;
-                    gl_FragColor = vec4(vColor, a);
-                }`
-        });
-
-        const stars = new THREE.Points(starGeo, starMat);
-        scene.add(stars);
-
-        /* ---- Armillary sphere: rings of thin lines ---- */
         const armillary = new THREE.Group();
-
-        const creamLineMat = new THREE.LineBasicMaterial({ color: 0xFAF6EF, transparent: true, opacity: 0.34 });
-        const amberLineMat = new THREE.LineBasicMaterial({ color: 0xE8A33D, transparent: true, opacity: 0.75 });
-        const duskLineMat = new THREE.LineBasicMaterial({ color: 0x8E7FB0, transparent: true, opacity: 0.4 });
 
         function makeRing(radius, material, segments = 160) {
             const pts = [];
@@ -292,86 +196,34 @@
             return new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), material);
         }
 
-        // Meridians
         for (let m = 0; m < 3; m++) {
-            const ring = makeRing(9, creamLineMat);
+            const ring = makeRing(9, slateMat);
             ring.rotation.y = (m / 3) * Math.PI;
             armillary.add(ring);
         }
-        // Equator
-        const equator = makeRing(9, duskLineMat);
+        const equator = makeRing(9, softMat);
         equator.rotation.x = Math.PI / 2;
         armillary.add(equator);
-        // Ecliptic band (amber), tilted 23.4°
-        const ecliptic = makeRing(9.9, amberLineMat);
+        const ecliptic = makeRing(9.9, accentMat);
         ecliptic.rotation.x = Math.PI / 2 - 0.408;
         armillary.add(ecliptic);
-        // Inner ring
-        const inner = makeRing(5.4, creamLineMat);
+        const inner = makeRing(5.4, slateMat);
         inner.rotation.x = Math.PI / 3;
         inner.rotation.y = Math.PI / 5;
         armillary.add(inner);
-        // Polar axis
         const axisGeo = new THREE.BufferGeometry().setFromPoints([
             new THREE.Vector3(0, -11.5, 0), new THREE.Vector3(0, 11.5, 0)
         ]);
-        armillary.add(new THREE.Line(axisGeo, amberLineMat));
-        // Core star
-        const coreGeo = new THREE.SphereGeometry(0.55, 16, 16);
-        const coreMat = new THREE.MeshBasicMaterial({ color: 0xE8A33D, transparent: true, opacity: 0.95 });
-        armillary.add(new THREE.Mesh(coreGeo, coreMat));
+        armillary.add(new THREE.Line(axisGeo, accentMat));
+        const core = new THREE.Mesh(
+            new THREE.SphereGeometry(0.55, 16, 16),
+            new THREE.MeshBasicMaterial({ color: 0xB87515 })
+        );
+        armillary.add(core);
 
         armillary.rotation.z = 0.18;
         scene.add(armillary);
 
-        const armMats = [creamLineMat, amberLineMat, duskLineMat, coreMat];
-        const armBase = [0.34, 0.75, 0.4, 0.95];
-
-        /* ---- The morning star: brightens as the night stars fade into dawn ---- */
-        const venusGeo = new THREE.BufferGeometry();
-        venusGeo.setAttribute("position", new THREE.BufferAttribute(new Float32Array([23.5, -7, -38]), 3));
-        venusGeo.setAttribute("aSize", new THREE.BufferAttribute(new Float32Array([6.5]), 1));
-        venusGeo.setAttribute("aPhase", new THREE.BufferAttribute(new Float32Array([1.3]), 1));
-        venusGeo.setAttribute("aColor", new THREE.BufferAttribute(new Float32Array([1, 0.96, 0.88]), 3));
-        const venusMat = starMat.clone();
-        venusMat.uniforms.uFade.value = 0;
-        const venus = new THREE.Points(venusGeo, venusMat);
-        scene.add(venus);
-
-        /* ---- Meteors: small pool of streaks ---- */
-        const meteors = [];
-        for (let m = 0; m < 2; m++) {
-            const mat = new THREE.LineBasicMaterial({ color: 0xFAF6EF, transparent: true, opacity: 0 });
-            const geo = new THREE.BufferGeometry().setFromPoints([
-                new THREE.Vector3(0, 0, 0), new THREE.Vector3(4.5, 1.4, 0)
-            ]);
-            const line = new THREE.Line(geo, mat);
-            line.position.set(0, 0, -30);
-            scene.add(line);
-            meteors.push({ line, mat });
-        }
-
-        function launchMeteor() {
-            if (document.hidden || prefersReduced) { scheduleMeteor(); return; }
-            const m = meteors[Math.floor(Math.random() * meteors.length)];
-            if (m.mat.opacity > 0.01) { scheduleMeteor(); return; }
-            const x0 = (Math.random() - 0.3) * 60;
-            const y0 = 10 + Math.random() * 22;
-            m.line.position.set(x0, y0, -34);
-            const dist = 16 + Math.random() * 14;
-            if (typeof gsap !== "undefined") {
-                gsap.to(m.mat, { opacity: 0.85 * skyState.fade, duration: 0.18, ease: "power1.in" });
-                gsap.to(m.line.position, {
-                    x: x0 - dist, y: y0 - dist * 0.32, duration: 1.1, ease: "power2.out",
-                    onComplete: () => gsap.to(m.mat, { opacity: 0, duration: 0.4 })
-                });
-            }
-            scheduleMeteor();
-        }
-        function scheduleMeteor() { setTimeout(launchMeteor, 5000 + Math.random() * 7000); }
-        if (!prefersReduced) scheduleMeteor();
-
-        /* ---- Layout, parallax, render loop ---- */
         let mouseX = 0, mouseY = 0;
         if (!isTouch) {
             window.addEventListener("pointermove", e => {
@@ -380,28 +232,11 @@
             }, { passive: true });
         }
 
-        let armMobileDim = 1;
-        function placeArmillary() {
-            const aspect = window.innerWidth / window.innerHeight;
-            if (aspect < 0.9) {
-                // Narrow screens: sit behind the headline, quieter so type stays legible
-                armillary.position.set(0, 6, -46);
-                armillary.scale.setScalar(0.8);
-                armMobileDim = 0.45;
-            } else {
-                armillary.position.set(15, 1.5, -40);
-                armillary.scale.setScalar(1);
-                armMobileDim = 1;
-            }
-        }
-
         function resize() {
-            const w = window.innerWidth, h = window.innerHeight;
+            const w = heroCanvas.clientWidth, h = heroCanvas.clientHeight;
             renderer.setSize(w, h, false);
             camera.aspect = w / h;
             camera.updateProjectionMatrix();
-            starMat.uniforms.uPixelRatio.value = Math.min(window.devicePixelRatio, 2);
-            placeArmillary();
         }
         resize();
         window.addEventListener("resize", resize);
@@ -409,79 +244,54 @@
         let rafId = null;
         function tick(now) {
             const t = now * 0.001;
-            starMat.uniforms.uTime.value = t;
-            starMat.uniforms.uFade.value = skyState.fade;
-            venusMat.uniforms.uTime.value = t * 0.4;
-            venusMat.uniforms.uFade.value = Math.min(1, Math.max(0, (1 - skyState.fade) / 0.7));
-
             armillary.rotation.y = t * 0.12;
             armillary.rotation.x = Math.sin(t * 0.07) * 0.08 + mouseY * 0.12;
-            armMats.forEach((mm, idx) => { mm.opacity = armBase[idx] * skyState.armOpacity * armMobileDim; });
-
-            stars.position.x = mouseX * -2.2;
-            stars.position.y = mouseY * 1.6;
-
-            camera.position.x += (mouseX * 1.1 - camera.position.x) * 0.05;
-            camera.lookAt(0, 0, -30);
-
+            armillary.position.x = mouseX * 1.2;
             renderer.render(scene, camera);
             rafId = requestAnimationFrame(tick);
         }
 
         if (prefersReduced) {
-            // One static frame: the sky exists, it just doesn't move
-            starMat.uniforms.uTime.value = 3;
-            venusMat.uniforms.uTime.value = 3;
-            venusMat.uniforms.uFade.value = 0.55;
-            armMats.forEach((mm, idx) => { mm.opacity = armBase[idx] * armMobileDim; });
-            renderer.render(scene, camera);
+            renderer.render(scene, camera);   // one static frame
         } else {
-            rafId = requestAnimationFrame(tick);
+            // Render only while the hero is on screen
+            new IntersectionObserver(entries => {
+                entries.forEach(en => {
+                    if (en.isIntersecting && !document.hidden) {
+                        if (!rafId) rafId = requestAnimationFrame(tick);
+                    } else if (rafId) {
+                        cancelAnimationFrame(rafId);
+                        rafId = null;
+                    }
+                });
+            }).observe(hero);
             document.addEventListener("visibilitychange", () => {
-                if (document.hidden) { cancelAnimationFrame(rafId); rafId = null; }
-                else if (!rafId) rafId = requestAnimationFrame(tick);
+                if (document.hidden && rafId) { cancelAnimationFrame(rafId); rafId = null; }
+                else if (!document.hidden && !rafId) rafId = requestAnimationFrame(tick);
             });
         }
     }
 
-    /* ================= GSAP choreography ================= */
+    /* ================= GSAP: entrance + scroll reveals (no scrubbing) ================= */
     if (typeof gsap !== "undefined") {
         gsap.registerPlugin(ScrollTrigger);
 
-        /* ---- Initial states set from JS so no-JS visitors see everything ---- */
         if (!prefersReduced) {
+            // Initial states set from JS so no-JS visitors see everything
             gsap.set(".reveal", { opacity: 0, y: 34 });
             gsap.set(".hero-title .line-inner", { yPercent: 115 });
             gsap.set(".hero-kicker, .hero-desc, .hero-ctas, .hero-scroll", { opacity: 0 });
-        }
 
-        /* ---- Loader → hero entrance ---- */
-        if (!prefersReduced) {
-            const intro = gsap.timeline();
-            intro
-                .from(".loader-word", { yPercent: 120, duration: 0.8, ease: "power3.out" })
-                .from(".loader-star", { scale: 0, rotation: -120, duration: 0.5, ease: "back.out(2)" }, "-=0.35")
-                .to(".loader-star", { rotation: 180, duration: 0.5, ease: "power2.inOut" }, "+=0.15")
-                .to("#loader", { opacity: 0, duration: 0.7, ease: "power2.inOut" }, "+=0.1")
-                .set("#loader", { display: "none" })
+            // Hero entrance, straight in: no loader
+            gsap.timeline({ delay: 0.15 })
                 .to(".hero-title .line-inner", {
-                    yPercent: 0, duration: 1.15, stagger: 0.13, ease: "power3.out"
-                }, "-=0.45")
+                    yPercent: 0, duration: 1.1, stagger: 0.12, ease: "power3.out"
+                })
                 .to(".hero-kicker, .hero-desc, .hero-ctas, .hero-scroll", {
                     opacity: 1, y: 0, duration: 0.9, stagger: 0.09, ease: "power2.out"
                 }, "-=0.7");
 
-            // Scroll hint bows out once the crossing is under way
-            gsap.to(".hero-scroll", {
-                opacity: 0, ease: "none",
-                scrollTrigger: { trigger: "#hero", start: "12% top", end: "35% top", scrub: 0.4 }
-            });
-        } else {
-            gsap.set("#loader", { display: "none" });
-        }
-
-        /* ---- Scroll reveals ---- */
-        if (!prefersReduced) {
+            // Scroll reveals
             gsap.utils.toArray(".reveal").forEach(el => {
                 gsap.to(el, {
                     opacity: 1, y: 0, duration: 1, ease: "power3.out",
@@ -489,7 +299,7 @@
                 });
             });
 
-            /* ---- Image clip reveals ---- */
+            // Image clip reveals
             document.querySelectorAll(".reveal-img").forEach(wrap => {
                 gsap.fromTo(wrap,
                     { clipPath: "inset(0 0 100% 0)" },
@@ -505,7 +315,7 @@
                     });
             });
 
-            /* ---- Constellations: stroke-draw + star pop ---- */
+            // Service diagrams: stroke-draw + star pop, once, on enter
             document.querySelectorAll(".constellation").forEach(svg => {
                 const line = svg.querySelector(".c-line");
                 const len = line.getTotalLength();
@@ -523,39 +333,11 @@
                     once: true
                 });
             });
-
-            /* ---- Dawn: crossfade sky plates + fade stars across the page ---- */
-            gsap.to("#skyDawn", {
-                opacity: 1, ease: "none",
-                scrollTrigger: {
-                    trigger: ".daylight", start: "top 80%",
-                    endTrigger: "#firstlight", end: "center center",
-                    scrub: 0.6
-                }
-            });
-            gsap.to(skyState, {
-                fade: 0.3, ease: "none",
-                scrollTrigger: {
-                    trigger: ".daylight", start: "top 80%",
-                    endTrigger: "#firstlight", end: "center center",
-                    scrub: 0.6
-                }
-            });
-
-            /* ---- Armillary: fades as the hero leaves ---- */
-            gsap.to(skyState, {
-                armOpacity: 0, ease: "none",
-                scrollTrigger: {
-                    trigger: "#constellations", start: "top 90%", end: "top 30%",
-                    scrub: 0.4
-                }
-            });
         } else {
             gsap.set(".reveal", { opacity: 1, y: 0 });
-            document.getElementById("skyDawn").style.opacity = "0.6";
         }
 
-        /* ---- Nav: solid after scroll, hide down / show up ---- */
+        // Nav: solid after scroll, hide going down, show coming up
         const nav = document.getElementById("nav");
         ScrollTrigger.create({
             start: "top -80",
@@ -567,119 +349,9 @@
         });
     }
 
-    /* ================= Course line across the chart paper ================= */
-    const daylight = document.querySelector(".daylight");
-    const routeSvg = document.getElementById("routeSvg");
-    if (daylight && routeSvg) {
-        const svgNS = "http://www.w3.org/2000/svg";
-        const routePath = document.getElementById("routePath");
-        const routeStart = document.getElementById("routeStart");
-        const routeEnd = document.getElementById("routeEnd");
-
-        const topWithin = el => {
-            let y = 0, n = el;
-            while (n && n !== daylight) { y += n.offsetTop; n = n.offsetParent; }
-            return y;
-        };
-        const leftWithin = el => {
-            let x = 0, n = el;
-            while (n && n !== daylight) { x += n.offsetLeft; n = n.offsetParent; }
-            return x;
-        };
-
-        // Catmull-Rom through waypoints, as cubic beziers
-        const smooth = pts => {
-            let d = `M ${pts[0][0].toFixed(1)} ${pts[0][1].toFixed(1)}`;
-            for (let k = 0; k < pts.length - 1; k++) {
-                const p0 = pts[Math.max(0, k - 1)], p1 = pts[k],
-                    p2 = pts[k + 1], p3 = pts[Math.min(pts.length - 1, k + 2)];
-                const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6];
-                const c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
-                d += ` C ${c1[0].toFixed(1)} ${c1[1].toFixed(1)}, ${c2[0].toFixed(1)} ${c2[1].toFixed(1)}, ${p2[0].toFixed(1)} ${p2[1].toFixed(1)}`;
-            }
-            return d;
-        };
-
-        function buildRoute() {
-            const w = daylight.clientWidth, h = daylight.clientHeight;
-            routeSvg.setAttribute("viewBox", `0 0 ${w} ${h}`);
-
-            const panel = document.getElementById("chartPanel");
-            const media = document.querySelector(".about-media");
-            const cta = document.querySelector("#navigator .btn-solid");
-            const pTop = topWithin(panel), pBot = pTop + panel.offsetHeight;
-            const mMid = topWithin(media) + media.offsetHeight / 2;
-            const cX = leftWithin(cta), cY = topWithin(cta) + cta.offsetHeight / 2;
-
-            const pts = [
-                [w * 0.58, 6],
-                [w * 0.13, pTop * 0.72],
-                [w * 0.88, pBot + (mMid - pBot) * 0.28],
-                [w * 0.24, mMid],
-                [cX - 54, cY]
-            ];
-            routePath.setAttribute("d", smooth(pts));
-
-            // Departure ring
-            routeStart.innerHTML = "";
-            const ring = document.createElementNS(svgNS, "circle");
-            ring.setAttribute("cx", pts[0][0]); ring.setAttribute("cy", pts[0][1] + 8);
-            ring.setAttribute("r", 6);
-            routeStart.appendChild(ring);
-
-            // Arrival: X marks the spot, with a label
-            routeEnd.innerHTML = "";
-            const [ex, ey] = pts[pts.length - 1];
-            [[-6, -6, 6, 6], [-6, 6, 6, -6]].forEach(([a, b, c, dd]) => {
-                const ln = document.createElementNS(svgNS, "line");
-                ln.setAttribute("x1", ex + a); ln.setAttribute("y1", ey + b);
-                ln.setAttribute("x2", ex + c); ln.setAttribute("y2", ey + dd);
-                routeEnd.appendChild(ln);
-            });
-            const label = document.createElementNS(svgNS, "text");
-            label.setAttribute("x", ex - 14); label.setAttribute("y", ey + 4);
-            label.setAttribute("text-anchor", "end");
-            label.textContent = translations[currentLang]["route.here"];
-            routeEnd.appendChild(label);
-        }
-
-        window.__buildRoute = buildRoute;
-        buildRoute();
-
-        if (typeof gsap !== "undefined" && !prefersReduced) {
-            gsap.fromTo(routeSvg,
-                { clipPath: "inset(0 0 100% 0)" },
-                {
-                    clipPath: "inset(0 0 0% 0)", ease: "none",
-                    scrollTrigger: {
-                        trigger: daylight, start: "top 55%", end: "bottom 75%", scrub: 0.5
-                    }
-                });
-        }
-
-        let routeTimer;
-        window.addEventListener("resize", () => {
-            clearTimeout(routeTimer);
-            routeTimer = setTimeout(() => {
-                buildRoute();
-                if (window.ScrollTrigger) ScrollTrigger.refresh();
-            }, 250);
-        });
-        window.addEventListener("load", () => {
-            buildRoute();
-            if (window.ScrollTrigger) ScrollTrigger.refresh();
-        });
-    }
-
-    /* ================= Nav: mark your position in the crossing ================= */
+    /* ================= Nav: highlight the section in view ================= */
     const navLinks = [...document.querySelectorAll(".nav-link")];
     if ("IntersectionObserver" in window && navLinks.length) {
-        const map = {
-            constellations: "#constellations",
-            instrument: "#instrument",
-            navigator: "#navigator",
-            firstlight: "#firstlight"
-        };
         const io = new IntersectionObserver(entries => {
             entries.forEach(en => {
                 if (!en.isIntersecting) return;
@@ -687,16 +359,13 @@
                     a.classList.toggle("active", a.getAttribute("href") === "#" + en.target.id));
             });
         }, { rootMargin: "-40% 0px -55% 0px" });
-        Object.keys(map).forEach(id => {
+        ["hero", "services", "instrument", "about", "contact"].forEach(id => {
             const el = document.getElementById(id);
-            if (el) io.observe(el);
+            if (el) io.observe(el);   // hero has no matching link: clears the highlight at the top
         });
-        const hero = document.getElementById("hero");
-        if (hero) io.observe(hero); // clears highlights back at the top
-        // Observing hero with no matching link naturally deactivates all
     }
 
-    /* ================= Ten-year star chart ================= */
+    /* ================= Ten-year growth chart ================= */
     const range = document.getElementById("amountRange");
     if (range) {
         const svgNS = "http://www.w3.org/2000/svg";

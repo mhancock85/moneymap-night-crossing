@@ -1,7 +1,8 @@
 /* ============================================================
-   MY MONEY MAP — The Night Crossing
-   Nocturne palette (spec-literal for UI) · Bricolage Grotesque /
+   MY MONEY MAP — light-first redesign
+   Nocturne palette (spec-literal) · Bricolage Grotesque /
    Atkinson Hyperlegible Next / Spline Sans Mono
+   Cream page · one midnight band for the growth calculator
    ============================================================ */
 
 /* ================= Tokens ================= */
@@ -20,9 +21,11 @@
     --nocturne-tide: #2D6EA8;
     --nocturne-ember: #B84A3A;
 
-    /* Dark-context secondary text (spec §5) */
+    /* Dark-context values (spec §5) */
     --dark-secondary: #94A3B8;
     --dark-surface: #1A2436;
+    --dark-positive: #6FA97F;
+    --dark-warning: #D97565;
 
     /* Type */
     --font-display: "Bricolage Grotesque", "Arial Black", sans-serif;
@@ -32,20 +35,20 @@
     /* Scale */
     --w-content: 1200px;
     --pad-x: clamp(1.25rem, 4vw, 4rem);
-    --pad-section: clamp(5rem, 12vh, 9rem);
+    --pad-section: clamp(5rem, 12vh, 8rem);
 
-    /* Applied — dark is this document's default (night) */
-    --text-primary: var(--nocturne-cream);
-    --text-secondary: var(--dark-secondary);
-    --text-accent: var(--nocturne-amber);       /* amber as text: dark surfaces only, 7.5:1 */
-    --focus-ring: var(--nocturne-amber);
-}
-
-.on-light {
+    /* Applied — light (page default) */
     --text-primary: var(--nocturne-graphite);
     --text-secondary: var(--nocturne-slate);
     --text-accent: var(--nocturne-amber-deep);  /* never plain amber text on light */
     --focus-ring: var(--nocturne-amber-deep);
+}
+
+.on-dark {
+    --text-primary: var(--nocturne-cream);
+    --text-secondary: var(--dark-secondary);
+    --text-accent: var(--nocturne-amber);       /* amber as text: dark surfaces only, 7.5:1 */
+    --focus-ring: var(--nocturne-amber);
 }
 
 /* ================= Reset ================= */
@@ -58,10 +61,25 @@ body {
     font-size: 1.0625rem;
     line-height: 1.6;                 /* dyslexia: 1.5+ */
     color: var(--text-primary);
-    background: var(--nocturne-midnight);
+    background: var(--nocturne-cream);   /* spec: cream, never white */
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
 }
+
+/* Faint chart-paper grid across the light page */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+        linear-gradient(rgba(58, 74, 95, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(58, 74, 95, 0.05) 1px, transparent 1px);
+    background-size: 72px 72px;
+}
+
+main, .nav, .footer { position: relative; z-index: 1; }
 
 img { max-width: 100%; display: block; }
 a { color: inherit; }
@@ -77,68 +95,6 @@ em { font-style: italic; }
     border-radius: 2px;
 }
 
-/* ================= Sky layers ================= */
-.sky-plate {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-}
-
-.sky-night {
-    background:
-        radial-gradient(120% 70% at 70% 0%, #16213A 0%, var(--nocturne-midnight) 55%, #0A101F 100%);
-}
-
-.sky-dawn {
-    opacity: 0;
-    background:
-        radial-gradient(90% 55% at 50% 108%, rgba(232, 163, 61, 0.55) 0%, rgba(184, 117, 21, 0.28) 30%, rgba(107, 91, 138, 0.35) 55%, rgba(15, 23, 41, 0) 78%),
-        linear-gradient(180deg, var(--nocturne-midnight) 0%, #1B2138 46%, #3A3554 72%, #6B5B8A 100%);
-}
-
-.sky-canvas {
-    position: fixed;
-    inset: 0;
-    z-index: 1;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-}
-
-main, .nav, .footer, .loader { position: relative; z-index: 2; }
-
-/* ================= Loader ================= */
-.loader {
-    position: fixed;
-    inset: 0;
-    z-index: 60;
-    display: grid;
-    place-items: center;
-    background: var(--nocturne-midnight);
-}
-
-.loader-inner {
-    display: flex;
-    align-items: baseline;
-    gap: 0.75rem;
-    overflow: hidden;
-}
-
-.loader-word {
-    font-family: var(--font-display);
-    font-size: clamp(1.6rem, 4vw, 2.6rem);
-    font-weight: 560;
-    color: var(--nocturne-cream);
-    display: inline-block;
-}
-
-.loader-star {
-    color: var(--nocturne-amber);
-    font-size: 1.4rem;
-    display: inline-block;
-}
-
 /* ================= Nav ================= */
 .nav {
     position: fixed;
@@ -151,10 +107,14 @@ main, .nav, .footer, .loader { position: relative; z-index: 2; }
     justify-content: space-between;
     gap: 1.5rem;
     padding: 1.1rem var(--pad-x);
-    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.35s ease;
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.35s ease, box-shadow 0.35s ease;
 }
 
-.nav.is-scrolled { background: rgba(15, 23, 41, 0.88); backdrop-filter: blur(12px); }
+.nav.is-scrolled {
+    background: var(--nocturne-cream);
+    box-shadow: 0 1px 0 rgba(58, 74, 95, 0.18), 0 8px 24px rgba(34, 38, 43, 0.06);
+}
+
 .nav.is-hidden { transform: translateY(-110%); }
 
 .nav-brand {
@@ -162,10 +122,11 @@ main, .nav, .footer, .loader { position: relative; z-index: 2; }
     font-weight: 560;
     font-size: 1.15rem;
     text-decoration: none;
-    color: var(--nocturne-cream);
+    color: var(--nocturne-graphite);
 }
 
-.brand-star { color: var(--nocturne-amber); margin-left: 0.15em; }
+.brand-star { color: var(--nocturne-amber-deep); margin-left: 0.15em; }
+.on-dark .brand-star { color: var(--nocturne-amber); }
 
 .nav-links { display: flex; gap: 1.9rem; }
 
@@ -174,14 +135,14 @@ main, .nav, .footer, .loader { position: relative; z-index: 2; }
     font-size: 0.82rem;
     letter-spacing: 0.04em;
     text-decoration: none;
-    color: var(--dark-secondary);
+    color: var(--nocturne-slate);
     transition: color 0.25s ease;
 }
 
-.nav-link:hover { color: var(--nocturne-cream); }
+.nav-link:hover { color: var(--nocturne-graphite); }
 
-.nav-link.active { color: var(--nocturne-cream); }
-.nav-link.active::before { content: "✦ "; color: var(--nocturne-amber); }
+.nav-link.active { color: var(--nocturne-graphite); }
+.nav-link.active::before { content: "✦ "; color: var(--nocturne-amber-deep); }
 
 .nav-right { display: flex; align-items: center; gap: 1.4rem; }
 
@@ -191,13 +152,13 @@ main, .nav, .footer, .loader { position: relative; z-index: 2; }
     background: none;
     border: none;
     font: inherit;
-    color: var(--dark-secondary);
+    color: var(--nocturne-slate);
     cursor: pointer;
     padding: 0.15rem 0.2rem;
 }
 
-.lang-btn.active { color: var(--nocturne-amber); }  /* amber text: dark surface, 7.5:1 */
-.lang-sep { color: var(--dark-secondary); }
+.lang-btn.active { color: var(--nocturne-amber-deep); font-weight: 600; }
+.lang-sep { color: var(--nocturne-slate); }
 
 /* ================= Buttons ================= */
 .btn-solid, .btn-ghost {
@@ -244,8 +205,8 @@ main, .nav, .footer, .loader { position: relative; z-index: 2; }
     margin-bottom: clamp(1.5rem, 3vh, 2.5rem);
 }
 
-.kicker-star { color: var(--nocturne-amber); font-size: 0.7rem; }
-.on-light .kicker-star { color: var(--nocturne-amber-deep); }
+.kicker-star { color: var(--nocturne-amber-deep); font-size: 0.7rem; }
+.on-dark .kicker-star { color: var(--nocturne-amber); }
 
 .chapter-title {
     font-family: var(--font-display);
@@ -256,8 +217,8 @@ main, .nav, .footer, .loader { position: relative; z-index: 2; }
     margin-bottom: clamp(1.2rem, 2.5vh, 2rem);
 }
 
-.accent-dark { color: var(--nocturne-amber); font-style: italic; }     /* dark surfaces: 7.5:1 */
-.accent-light { color: var(--nocturne-amber-deep); font-style: italic; } /* light surfaces: 4.6:1 */
+/* Accent italic follows its surface via --text-accent */
+.accent { color: var(--text-accent); font-style: italic; }
 
 .chapter-sub {
     max-width: 34em;
@@ -273,7 +234,7 @@ main, .nav, .footer, .loader { position: relative; z-index: 2; }
     padding: var(--pad-section) var(--pad-x);
 }
 
-/* ================= Hero ================= */
+/* ================= Hero (light) ================= */
 .hero {
     min-height: 100svh;
     display: flex;
@@ -284,6 +245,17 @@ main, .nav, .footer, .loader { position: relative; z-index: 2; }
     padding: 7rem var(--pad-x) 4rem;
     position: relative;
 }
+
+.hero-canvas {
+    position: absolute;
+    top: 0;
+    right: calc(-1 * var(--pad-x));
+    width: min(58vw, 820px);
+    height: 100%;
+    pointer-events: none;
+}
+
+.hero-inner { position: relative; }
 
 .hero-title {
     font-family: var(--font-display);
@@ -318,13 +290,13 @@ main, .nav, .footer, .loader { position: relative; z-index: 2; }
     gap: 0.9rem;
     font-size: 0.78rem;
     letter-spacing: 0.06em;
-    color: var(--dark-secondary);
+    color: var(--nocturne-slate);
 }
 
 .hero-scroll-line {
     width: 72px;
     height: 1px;
-    background: var(--dark-secondary);
+    background: var(--nocturne-slate);
     transform-origin: left;
     animation: scrollPulse 2.6s ease-in-out infinite;
 }
@@ -334,7 +306,7 @@ main, .nav, .footer, .loader { position: relative; z-index: 2; }
     50% { transform: scaleX(1); opacity: 1; }
 }
 
-/* ================= Constellations ================= */
+/* ================= Services (light) ================= */
 .constellation-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -343,121 +315,96 @@ main, .nav, .footer, .loader { position: relative; z-index: 2; }
 }
 
 .constellation-card {
-    border: 1px solid rgba(148, 163, 184, 0.28);
+    border: 1px solid rgba(58, 74, 95, 0.35);
     border-radius: 18px;
     padding: 1.8rem 1.6rem 1.9rem;
-    background: rgba(26, 36, 54, 0.55);
-    backdrop-filter: blur(6px);
-    transition: border-color 0.35s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.35s ease;
+    background: var(--nocturne-cream);
+    transition: border-color 0.35s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
 }
 
 .constellation-card:hover {
-    border-color: var(--nocturne-amber);
+    border-color: var(--nocturne-amber-deep);
     transform: translateY(-6px);
-    background: rgba(26, 36, 54, 0.85);
+    box-shadow: 0 18px 40px rgba(34, 38, 43, 0.10);
 }
 
-.constellation { width: 100%; height: auto; margin-bottom: 0.6rem; }
+.constellation { width: 100%; height: auto; margin-bottom: 0.9rem; }
 
 .c-line {
     fill: none;
-    stroke: var(--dark-secondary);
+    stroke: var(--nocturne-slate);
     stroke-width: 1;
-    opacity: 0.85;
-    transition: stroke 0.4s ease;
+    opacity: 0.7;
+    transition: stroke 0.4s ease, opacity 0.4s ease;
 }
 
-.constellation-card:hover .c-line { stroke: var(--nocturne-amber); }
+.constellation-card:hover .c-line { stroke: var(--nocturne-amber-deep); opacity: 1; }
 
-.c-star { fill: var(--nocturne-cream); }
-.c-star-major { fill: var(--nocturne-amber); }
-
-.c-coord { font-size: 0.7rem; color: var(--dark-secondary); letter-spacing: 0.05em; margin-bottom: 0.9rem; }
+.c-star { fill: var(--nocturne-slate); }
+.c-star-major { fill: var(--nocturne-amber-deep); }
 
 .c-name {
     font-family: var(--font-display);
-    font-size: 1.45rem;
+    font-size: 1.35rem;
     font-weight: 600;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.5rem;
 }
 
-.c-role { font-size: 0.78rem; letter-spacing: 0.05em; color: var(--nocturne-amber); margin-bottom: 0.8rem; }
+.c-desc { font-size: 0.95rem; color: var(--text-secondary); }
 
-.c-desc { font-size: 0.95rem; color: var(--dark-secondary); }
-
-/* ================= Daylight (chart paper) ================= */
-.daylight {
+/* ================= Night band (calculator) ================= */
+.nightband {
     position: relative;
-    background: var(--nocturne-cream);   /* spec: cream, never white */
-    color: var(--nocturne-graphite);
-    border-radius: 44px 44px 0 0;
-    margin-top: clamp(3rem, 8vh, 6rem);
-    box-shadow: 0 -30px 80px rgba(10, 16, 31, 0.55);
+    background:
+        radial-gradient(120% 80% at 70% 0%, #16213A 0%, var(--nocturne-midnight) 60%, #0B1120 100%);
+    color: var(--nocturne-cream);
+    border-radius: 44px;
+    margin: clamp(2rem, 6vh, 4rem) auto;
+    box-shadow: 0 30px 80px rgba(15, 23, 41, 0.35);
+    overflow: hidden;
 }
 
-/* Graticule: decorative chart lines on the paper */
-.daylight::before {
+/* Static hand-placed stars: two layers, the second twinkles gently */
+.nightband::before,
+.nightband::after {
     content: "";
     position: absolute;
     inset: 0;
-    border-radius: inherit;
+    pointer-events: none;
     background-image:
-        linear-gradient(rgba(58, 74, 95, 0.07) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(58, 74, 95, 0.07) 1px, transparent 1px);
-    background-size: 72px 72px;
-    pointer-events: none;
+        radial-gradient(1.5px 1.5px at 8% 22%, rgba(250, 246, 239, 0.9) 50%, transparent 51%),
+        radial-gradient(1px 1px at 21% 64%, rgba(250, 246, 239, 0.7) 50%, transparent 51%),
+        radial-gradient(2px 2px at 33% 12%, rgba(232, 163, 61, 0.8) 50%, transparent 51%),
+        radial-gradient(1px 1px at 46% 42%, rgba(250, 246, 239, 0.6) 50%, transparent 51%),
+        radial-gradient(1.5px 1.5px at 58% 8%, rgba(250, 246, 239, 0.85) 50%, transparent 51%),
+        radial-gradient(1px 1px at 69% 30%, rgba(250, 246, 239, 0.6) 50%, transparent 51%),
+        radial-gradient(2px 2px at 81% 16%, rgba(250, 246, 239, 0.9) 50%, transparent 51%),
+        radial-gradient(1px 1px at 91% 51%, rgba(250, 246, 239, 0.65) 50%, transparent 51%),
+        radial-gradient(1.5px 1.5px at 14% 86%, rgba(250, 246, 239, 0.7) 50%, transparent 51%),
+        radial-gradient(1px 1px at 76% 78%, rgba(250, 246, 239, 0.55) 50%, transparent 51%),
+        radial-gradient(1.5px 1.5px at 94% 88%, rgba(232, 163, 61, 0.6) 50%, transparent 51%);
 }
 
-.daylight > * { position: relative; }
-
-/* Course line: the route being plotted across the paper */
-.route {
-    position: absolute !important;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 0;
+.nightband::after {
+    background-image:
+        radial-gradient(1px 1px at 12% 40%, rgba(250, 246, 239, 0.8) 50%, transparent 51%),
+        radial-gradient(1.5px 1.5px at 27% 26%, rgba(250, 246, 239, 0.7) 50%, transparent 51%),
+        radial-gradient(1px 1px at 41% 74%, rgba(250, 246, 239, 0.6) 50%, transparent 51%),
+        radial-gradient(1px 1px at 54% 20%, rgba(232, 163, 61, 0.7) 50%, transparent 51%),
+        radial-gradient(1.5px 1.5px at 64% 58%, rgba(250, 246, 239, 0.7) 50%, transparent 51%),
+        radial-gradient(1px 1px at 87% 34%, rgba(250, 246, 239, 0.75) 50%, transparent 51%),
+        radial-gradient(1px 1px at 36% 90%, rgba(250, 246, 239, 0.5) 50%, transparent 51%);
+    animation: twinkle 5s ease-in-out infinite alternate;
 }
 
-.route-path {
-    fill: none;
-    stroke: var(--nocturne-dusk);
-    stroke-width: 1.6;
-    stroke-linecap: round;
-    stroke-dasharray: 1 11;
-    opacity: 0.5;
+@keyframes twinkle {
+    from { opacity: 0.25; }
+    to { opacity: 1; }
 }
 
-.route-start circle {
-    fill: none;
-    stroke: var(--nocturne-dusk);
-    stroke-width: 1.4;
-    opacity: 0.55;
-}
+.nightband > * { position: relative; }
 
-.route-end line {
-    stroke: var(--nocturne-amber-deep);
-    stroke-width: 2;
-    stroke-linecap: round;
-    opacity: 0.85;
-}
-
-.route-end text {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    fill: var(--nocturne-slate);
-    letter-spacing: 0.04em;
-}
-
-/* Bottom of the paper rolls back up before dawn section */
-.daylight {
-    border-radius: 44px;
-    margin-bottom: clamp(3rem, 8vh, 6rem);
-    box-shadow: 0 -30px 80px rgba(10, 16, 31, 0.55), 0 30px 80px rgba(10, 16, 31, 0.55);
-}
-
-/* ================= Instrument ================= */
+/* ================= Instrument (inside night band) ================= */
 .instrument-head {
     display: grid;
     grid-template-columns: 1.25fr 0.75fr;
@@ -483,10 +430,10 @@ main, .nav, .footer, .loader { position: relative; z-index: 2; }
     display: grid;
     grid-template-columns: 1.35fr 0.65fr;
     gap: clamp(2rem, 4vw, 3.5rem);
-    border: 1px solid rgba(58, 74, 95, 0.35);
+    border: 1px solid rgba(148, 163, 184, 0.3);
     border-radius: 24px;
     padding: clamp(1.5rem, 3.5vw, 3rem);
-    background: var(--nocturne-cream);   /* opaque: the course line passes beneath the instrument */
+    background: var(--dark-surface);
 }
 
 .panel-chart { align-self: center; }
@@ -495,27 +442,27 @@ main, .nav, .footer, .loader { position: relative; z-index: 2; }
 
 .chart-line {
     fill: none;
-    stroke: var(--nocturne-dusk);
+    stroke: #8E7FB0;                 /* dusk, lightened for the dark surface */
     stroke-width: 2;
 }
 
-.chart-fill { fill: var(--nocturne-dusk); opacity: 0.08; stroke: none; }
+.chart-fill { fill: var(--nocturne-dusk); opacity: 0.22; stroke: none; }
 
-.chart-gridline { stroke: rgba(58, 74, 95, 0.4); stroke-width: 1; stroke-dasharray: 2 6; }
+.chart-gridline { stroke: rgba(148, 163, 184, 0.4); stroke-width: 1; stroke-dasharray: 2 6; }
 .chart-gridlabel, .chart-axislabel {
     font-family: var(--font-mono);
     font-size: 13px;
-    fill: var(--nocturne-slate);
+    fill: var(--dark-secondary);
 }
 
-.chart-star { fill: var(--nocturne-amber); stroke: var(--nocturne-graphite); stroke-width: 1; }
+.chart-star { fill: var(--nocturne-amber); stroke: var(--nocturne-midnight); stroke-width: 1; }
 .chart-endlabel {
     font-family: var(--font-display);
     font-size: 26px;
     font-weight: 640;
-    fill: var(--nocturne-graphite);
+    fill: var(--nocturne-cream);
 }
-.chart-endlabel-sub { font-family: var(--font-mono); font-size: 12.5px; fill: var(--nocturne-slate); }
+.chart-endlabel-sub { font-family: var(--font-mono); font-size: 12.5px; fill: var(--dark-secondary); }
 
 .dial-label { display: block; font-size: 0.8rem; letter-spacing: 0.05em; color: var(--text-secondary); margin-bottom: 0.4rem; }
 
@@ -527,14 +474,14 @@ main, .nav, .footer, .loader { position: relative; z-index: 2; }
     margin-bottom: 1rem;
 }
 
-/* Range slider: amber fill on slate track, graphite thumb ring */
+/* Range slider: amber fill on slate track, cream-ringed thumb */
 input[type="range"] {
     width: 100%;
     appearance: none;
     -webkit-appearance: none;
     height: 6px;
     border-radius: 3px;
-    background: linear-gradient(90deg, var(--nocturne-amber) var(--fill, 25%), rgba(58, 74, 95, 0.35) var(--fill, 25%));
+    background: linear-gradient(90deg, var(--nocturne-amber) var(--fill, 25%), rgba(148, 163, 184, 0.35) var(--fill, 25%));
     cursor: pointer;
 }
 
@@ -545,7 +492,7 @@ input[type="range"]::-webkit-slider-thumb {
     height: 26px;
     border-radius: 50%;
     background: var(--nocturne-amber);
-    border: 2.5px solid var(--nocturne-graphite);
+    border: 2.5px solid var(--nocturne-cream);
     transition: transform 0.2s ease;
 }
 
@@ -556,7 +503,7 @@ input[type="range"]::-moz-range-thumb {
     height: 26px;
     border-radius: 50%;
     background: var(--nocturne-amber);
-    border: 2.5px solid var(--nocturne-graphite);
+    border: 2.5px solid var(--nocturne-cream);
 }
 
 .dial-scale {
@@ -579,11 +526,11 @@ input[type="range"]::-moz-range-thumb {
     margin: 0.35rem 0 1rem;
 }
 
-.proj-glyph { color: var(--nocturne-fern); font-size: 0.55em; vertical-align: 0.35em; margin-right: 0.1em; }
+.proj-glyph { color: var(--dark-positive); font-size: 0.55em; vertical-align: 0.35em; margin-right: 0.1em; }
 
 .projection-foot { font-size: 0.8rem; color: var(--text-secondary); max-width: 30em; }
 
-/* ================= Navigator (about) ================= */
+/* ================= About (light) ================= */
 .about-grid {
     display: grid;
     grid-template-columns: 0.95fr 1.05fr;
@@ -617,8 +564,8 @@ input[type="range"]::-moz-range-thumb {
 
 .cred-star { color: var(--nocturne-amber-deep); font-size: 0.75rem; flex-shrink: 0; }
 
-/* ================= First light (contact) ================= */
-.firstlight { padding-bottom: clamp(6rem, 14vh, 10rem); }
+/* ================= Contact (light) ================= */
+.contact { padding-bottom: clamp(6rem, 12vh, 9rem); }
 
 .contact-grid {
     display: grid;
@@ -631,44 +578,43 @@ input[type="range"]::-moz-range-thumb {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
-    background: rgba(26, 36, 54, 0.72);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(148, 163, 184, 0.28);
+    background: var(--nocturne-cream);
+    border: 1px solid rgba(58, 74, 95, 0.35);
     border-radius: 24px;
     padding: clamp(1.6rem, 3.5vw, 2.6rem);
+    box-shadow: 0 18px 50px rgba(34, 38, 43, 0.07);
 }
 
 .field { display: flex; flex-direction: column; gap: 0.45rem; }
 .field-wide { grid-column: 1 / -1; }
 
-.field label { font-size: 0.78rem; letter-spacing: 0.05em; color: var(--dark-secondary); }
+.field label { font-size: 0.78rem; letter-spacing: 0.05em; color: var(--nocturne-slate); }
 
 .field input,
 .field textarea {
     font-family: var(--font-body);
     font-size: 1rem;
-    color: var(--nocturne-cream);
-    background: rgba(15, 23, 41, 0.6);
-    border: 1px solid var(--dark-secondary);
+    color: var(--nocturne-graphite);
+    background: var(--nocturne-cream);
+    border: 1px solid var(--nocturne-slate);
     border-radius: 10px;
     padding: 0.8rem 1rem;
     resize: vertical;
 }
 
-.field input::placeholder, .field textarea::placeholder { color: var(--dark-secondary); }
+.field input::placeholder, .field textarea::placeholder { color: var(--nocturne-slate); }
 
 .form-actions { grid-column: 1 / -1; display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap; }
 
 .form-msg { font-size: 0.85rem; }
-.form-msg.ok { color: #6FA97F; }    /* spec dark-mode positive */
-.form-msg.err { color: #D97565; }   /* spec dark-mode warning */
+.form-msg.ok { color: var(--nocturne-fern); }
+.form-msg.err { color: var(--nocturne-ember); }
 
-/* ================= Footer ================= */
+/* ================= Footer (dark) ================= */
 .footer {
-    border-top: 1px solid rgba(148, 163, 184, 0.22);
+    background: var(--nocturne-midnight);   /* spec: footer is a primary dark surface */
     padding: 3rem var(--pad-x) 2.4rem;
     max-width: 100%;
-    background: var(--nocturne-midnight);   /* spec: footer is a primary dark surface */
 }
 
 .footer-top {
@@ -710,6 +656,8 @@ input[type="range"]::-moz-range-thumb {
     .about-grid { grid-template-columns: 1fr; }
     .contact-grid { grid-template-columns: 1fr; }
     .nav-links { display: none; }
+    .hero-canvas { opacity: 0.4; right: -20vw; width: 90vw; }
+    .nightband { border-radius: 26px; }
 }
 
 @media (max-width: 620px) {
@@ -718,7 +666,6 @@ input[type="range"]::-moz-range-thumb {
     .about-media { grid-template-columns: 1fr; }
     .about-media-offset { margin-top: 0; }
     .btn-nav { display: none; }
-    .daylight { border-radius: 26px; }
 }
 
 /* ================= Reduced motion ================= */
@@ -730,4 +677,5 @@ input[type="range"]::-moz-range-thumb {
         transition-duration: 0.01ms !important;
     }
     .hero-scroll-line { animation: none; }
+    .nightband::after { animation: none; opacity: 0.7; }
 }
