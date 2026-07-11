@@ -366,14 +366,18 @@
             }, { passive: true });
         }
 
+        let armMobileDim = 1;
         function placeArmillary() {
             const aspect = window.innerWidth / window.innerHeight;
             if (aspect < 0.9) {
+                // Narrow screens: sit behind the headline, quieter so type stays legible
                 armillary.position.set(0, 6, -46);
                 armillary.scale.setScalar(0.8);
+                armMobileDim = 0.45;
             } else {
                 armillary.position.set(15, 1.5, -40);
                 armillary.scale.setScalar(1);
+                armMobileDim = 1;
             }
         }
 
@@ -396,7 +400,7 @@
 
             armillary.rotation.y = t * 0.12;
             armillary.rotation.x = Math.sin(t * 0.07) * 0.08 + mouseY * 0.12;
-            armMats.forEach((mm, idx) => { mm.opacity = armBase[idx] * skyState.armOpacity; });
+            armMats.forEach((mm, idx) => { mm.opacity = armBase[idx] * skyState.armOpacity * armMobileDim; });
 
             stars.position.x = mouseX * -2.2;
             stars.position.y = mouseY * 1.6;
@@ -411,6 +415,7 @@
         if (prefersReduced) {
             // One static frame: the sky exists, it just doesn't move
             starMat.uniforms.uTime.value = 3;
+            armMats.forEach((mm, idx) => { mm.opacity = armBase[idx] * armMobileDim; });
             renderer.render(scene, camera);
         } else {
             rafId = requestAnimationFrame(tick);
@@ -630,11 +635,12 @@
 
             const endY = yFor(m * fvFactor(10));
             const final = m * fvFactor(10);
+            const labelY = Math.min(Math.max(endY + 8, T + 24), T + plotH - 18);
             endValue.setAttribute("x", xFor(10) + 16);
-            endValue.setAttribute("y", Math.max(endY + 8, T + 24));
+            endValue.setAttribute("y", labelY);
             endValue.textContent = fmt(final);
             endSub.setAttribute("x", xFor(10) + 16);
-            endSub.setAttribute("y", Math.max(endY + 8, T + 24) + 20);
+            endSub.setAttribute("y", labelY + 20);
             endSub.textContent = translations[currentLang]["instrument.endsub"];
 
             projValue.textContent = fmt(final);

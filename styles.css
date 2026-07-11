@@ -242,6 +242,7 @@ main, .nav, .footer, .loader { position: relative; z-index: 2; }
 }
 
 .kicker-star { color: var(--nocturne-amber); font-size: 0.7rem; }
+.on-light .kicker-star { color: var(--nocturne-amber-deep); }
 
 .chapter-title {
     font-family: var(--font-display);
@@ -403,8 +404,6 @@ main, .nav, .footer, .loader { position: relative; z-index: 2; }
 
 .daylight > * { position: relative; }
 
-.daylight ~ .firstlight { margin-top: 0; }
-
 /* Bottom of the paper rolls back up before dawn section */
 .daylight {
     border-radius: 44px;
@@ -417,9 +416,11 @@ main, .nav, .footer, .loader { position: relative; z-index: 2; }
     display: grid;
     grid-template-columns: 1.25fr 0.75fr;
     gap: clamp(2rem, 5vw, 4rem);
-    align-items: end;
+    align-items: center;
     margin-bottom: clamp(2.5rem, 6vh, 4rem);
 }
+
+.instrument-figure .reveal-img { max-height: 420px; }
 
 .instrument-figure figcaption,
 .contact-figure figcaption {
@@ -441,6 +442,8 @@ main, .nav, .footer, .loader { position: relative; z-index: 2; }
     padding: clamp(1.5rem, 3.5vw, 3rem);
     background: rgba(250, 246, 239, 0.7);
 }
+
+.panel-chart { align-self: center; }
 
 .starchart { width: 100%; height: auto; }
 
@@ -617,6 +620,7 @@ input[type="range"]::-moz-range-thumb {
     border-top: 1px solid rgba(148, 163, 184, 0.22);
     padding: 3rem var(--pad-x) 2.4rem;
     max-width: 100%;
+    background: var(--nocturne-midnight);   /* spec: footer is a primary dark surface */
 }
 
 .footer-top {
