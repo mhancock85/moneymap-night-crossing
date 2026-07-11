@@ -29,8 +29,8 @@ meaning-bearing relies on those blends.
 
 | Role | Face | Why |
 | :--- | :--- | :--- |
-| Display | Bricolage Grotesque (variable, opsz) | Warm, characterful, avoids the default serif-on-cream look |
-| Body | Atkinson Hyperlegible Next | Designed by the Braille Institute; inclusivity is part of the brief |
+| Display | Bricolage Grotesque | Warm, characterful, not the default serif |
+| Body | Atkinson Hyperlegible Next | Braille Institute design; inclusive |
 | Utility | Spline Sans Mono | Coordinates, data, captions |
 
 Dyslexia rules: line height 1.5+ for body, left-aligned, no justified
