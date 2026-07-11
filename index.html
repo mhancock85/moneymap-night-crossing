@@ -185,6 +185,13 @@
         <!-- ================= DAYLIGHT WRAP: chart paper over the night ================= -->
         <div class="daylight on-light">
 
+            <!-- Course line plotted across the chart paper as you scroll -->
+            <svg class="route" id="routeSvg" aria-hidden="true">
+                <path class="route-path" id="routePath" d="" />
+                <g class="route-start" id="routeStart"></g>
+                <g class="route-end" id="routeEnd"></g>
+            </svg>
+
             <!-- ================= 02 INSTRUMENT · VEGA ================= -->
             <section class="chapter instrument" id="instrument">
                 <p class="kicker mono reveal">
@@ -219,6 +226,7 @@
                         <svg class="starchart" id="starChart" viewBox="0 0 720 400" role="img"
                             aria-label="Projected growth of monthly savings over ten years">
                             <g id="chartGrid"></g>
+                            <path class="chart-fill" id="chartFill" d="" />
                             <path class="chart-line" id="chartLine" d="" />
                             <g id="chartStars"></g>
                             <g id="chartEndLabel"></g>

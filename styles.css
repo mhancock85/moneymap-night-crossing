@@ -180,6 +180,9 @@ main, .nav, .footer, .loader { position: relative; z-index: 2; }
 
 .nav-link:hover { color: var(--nocturne-cream); }
 
+.nav-link.active { color: var(--nocturne-cream); }
+.nav-link.active::before { content: "✦ "; color: var(--nocturne-amber); }
+
 .nav-right { display: flex; align-items: center; gap: 1.4rem; }
 
 .lang-switch { display: flex; align-items: center; gap: 0.3rem; font-family: var(--font-mono); font-size: 0.82rem; }
@@ -361,7 +364,10 @@ main, .nav, .footer, .loader { position: relative; z-index: 2; }
     stroke: var(--dark-secondary);
     stroke-width: 1;
     opacity: 0.85;
+    transition: stroke 0.4s ease;
 }
+
+.constellation-card:hover .c-line { stroke: var(--nocturne-amber); }
 
 .c-star { fill: var(--nocturne-cream); }
 .c-star-major { fill: var(--nocturne-amber); }
@@ -404,6 +410,46 @@ main, .nav, .footer, .loader { position: relative; z-index: 2; }
 
 .daylight > * { position: relative; }
 
+/* Course line: the route being plotted across the paper */
+.route {
+    position: absolute !important;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.route-path {
+    fill: none;
+    stroke: var(--nocturne-dusk);
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-dasharray: 1 11;
+    opacity: 0.5;
+}
+
+.route-start circle {
+    fill: none;
+    stroke: var(--nocturne-dusk);
+    stroke-width: 1.4;
+    opacity: 0.55;
+}
+
+.route-end line {
+    stroke: var(--nocturne-amber-deep);
+    stroke-width: 2;
+    stroke-linecap: round;
+    opacity: 0.85;
+}
+
+.route-end text {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    fill: var(--nocturne-slate);
+    letter-spacing: 0.04em;
+}
+
 /* Bottom of the paper rolls back up before dawn section */
 .daylight {
     border-radius: 44px;
@@ -440,7 +486,7 @@ main, .nav, .footer, .loader { position: relative; z-index: 2; }
     border: 1px solid rgba(58, 74, 95, 0.35);
     border-radius: 24px;
     padding: clamp(1.5rem, 3.5vw, 3rem);
-    background: rgba(250, 246, 239, 0.7);
+    background: var(--nocturne-cream);   /* opaque: the course line passes beneath the instrument */
 }
 
 .panel-chart { align-self: center; }
@@ -452,6 +498,8 @@ main, .nav, .footer, .loader { position: relative; z-index: 2; }
     stroke: var(--nocturne-dusk);
     stroke-width: 2;
 }
+
+.chart-fill { fill: var(--nocturne-dusk); opacity: 0.08; stroke: none; }
 
 .chart-gridline { stroke: rgba(58, 74, 95, 0.4); stroke-width: 1; stroke-dasharray: 2 6; }
 .chart-gridlabel, .chart-axislabel {

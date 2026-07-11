@@ -74,6 +74,7 @@
             "contact.success": "Thank you. Marcia will be in touch soon.",
             "contact.error": "Something went wrong. Please try again or email directly.",
             "contact.figcap": "Coffee first. Then the crossing.",
+            "route.here": "you are here",
             "footer.tag": "Empowering your financial future.",
             "footer.copy": "© 2026 My Money Map. All rights reserved.",
             "footer.credit": "Designed and built by Claude Fable 5"
@@ -140,6 +141,7 @@
             "contact.success": "Obrigada. A Marcia entrará em contato em breve.",
             "contact.error": "Algo deu errado. Tente novamente ou envie um e-mail diretamente.",
             "contact.figcap": "Primeiro o café. Depois, a travessia.",
+            "route.here": "você está aqui",
             "footer.tag": "Fortalecendo o seu futuro financeiro.",
             "footer.copy": "© 2026 My Money Map. Todos os direitos reservados.",
             "footer.credit": "Desenhado e construído por Claude Fable 5"
@@ -168,6 +170,7 @@
             btn.setAttribute("aria-pressed", String(active));
         });
         if (window.__renderChart) window.__renderChart(true);
+        if (window.__buildRoute) window.__buildRoute();
     }
 
     document.querySelectorAll(".lang-btn").forEach(btn =>
@@ -324,6 +327,17 @@
         const armMats = [creamLineMat, amberLineMat, duskLineMat, coreMat];
         const armBase = [0.34, 0.75, 0.4, 0.95];
 
+        /* ---- The morning star: brightens as the night stars fade into dawn ---- */
+        const venusGeo = new THREE.BufferGeometry();
+        venusGeo.setAttribute("position", new THREE.BufferAttribute(new Float32Array([23.5, -7, -38]), 3));
+        venusGeo.setAttribute("aSize", new THREE.BufferAttribute(new Float32Array([6.5]), 1));
+        venusGeo.setAttribute("aPhase", new THREE.BufferAttribute(new Float32Array([1.3]), 1));
+        venusGeo.setAttribute("aColor", new THREE.BufferAttribute(new Float32Array([1, 0.96, 0.88]), 3));
+        const venusMat = starMat.clone();
+        venusMat.uniforms.uFade.value = 0;
+        const venus = new THREE.Points(venusGeo, venusMat);
+        scene.add(venus);
+
         /* ---- Meteors: small pool of streaks ---- */
         const meteors = [];
         for (let m = 0; m < 2; m++) {
@@ -397,6 +411,8 @@
             const t = now * 0.001;
             starMat.uniforms.uTime.value = t;
             starMat.uniforms.uFade.value = skyState.fade;
+            venusMat.uniforms.uTime.value = t * 0.4;
+            venusMat.uniforms.uFade.value = Math.min(1, Math.max(0, (1 - skyState.fade) / 0.7));
 
             armillary.rotation.y = t * 0.12;
             armillary.rotation.x = Math.sin(t * 0.07) * 0.08 + mouseY * 0.12;
@@ -415,6 +431,8 @@
         if (prefersReduced) {
             // One static frame: the sky exists, it just doesn't move
             starMat.uniforms.uTime.value = 3;
+            venusMat.uniforms.uTime.value = 3;
+            venusMat.uniforms.uFade.value = 0.55;
             armMats.forEach((mm, idx) => { mm.opacity = armBase[idx] * armMobileDim; });
             renderer.render(scene, camera);
         } else {
@@ -549,6 +567,135 @@
         });
     }
 
+    /* ================= Course line across the chart paper ================= */
+    const daylight = document.querySelector(".daylight");
+    const routeSvg = document.getElementById("routeSvg");
+    if (daylight && routeSvg) {
+        const svgNS = "http://www.w3.org/2000/svg";
+        const routePath = document.getElementById("routePath");
+        const routeStart = document.getElementById("routeStart");
+        const routeEnd = document.getElementById("routeEnd");
+
+        const topWithin = el => {
+            let y = 0, n = el;
+            while (n && n !== daylight) { y += n.offsetTop; n = n.offsetParent; }
+            return y;
+        };
+        const leftWithin = el => {
+            let x = 0, n = el;
+            while (n && n !== daylight) { x += n.offsetLeft; n = n.offsetParent; }
+            return x;
+        };
+
+        // Catmull-Rom through waypoints, as cubic beziers
+        const smooth = pts => {
+            let d = `M ${pts[0][0].toFixed(1)} ${pts[0][1].toFixed(1)}`;
+            for (let k = 0; k < pts.length - 1; k++) {
+                const p0 = pts[Math.max(0, k - 1)], p1 = pts[k],
+                    p2 = pts[k + 1], p3 = pts[Math.min(pts.length - 1, k + 2)];
+                const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6];
+                const c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
+                d += ` C ${c1[0].toFixed(1)} ${c1[1].toFixed(1)}, ${c2[0].toFixed(1)} ${c2[1].toFixed(1)}, ${p2[0].toFixed(1)} ${p2[1].toFixed(1)}`;
+            }
+            return d;
+        };
+
+        function buildRoute() {
+            const w = daylight.clientWidth, h = daylight.clientHeight;
+            routeSvg.setAttribute("viewBox", `0 0 ${w} ${h}`);
+
+            const panel = document.getElementById("chartPanel");
+            const media = document.querySelector(".about-media");
+            const cta = document.querySelector("#navigator .btn-solid");
+            const pTop = topWithin(panel), pBot = pTop + panel.offsetHeight;
+            const mMid = topWithin(media) + media.offsetHeight / 2;
+            const cX = leftWithin(cta), cY = topWithin(cta) + cta.offsetHeight / 2;
+
+            const pts = [
+                [w * 0.58, 6],
+                [w * 0.13, pTop * 0.72],
+                [w * 0.88, pBot + (mMid - pBot) * 0.28],
+                [w * 0.24, mMid],
+                [cX - 54, cY]
+            ];
+            routePath.setAttribute("d", smooth(pts));
+
+            // Departure ring
+            routeStart.innerHTML = "";
+            const ring = document.createElementNS(svgNS, "circle");
+            ring.setAttribute("cx", pts[0][0]); ring.setAttribute("cy", pts[0][1] + 8);
+            ring.setAttribute("r", 6);
+            routeStart.appendChild(ring);
+
+            // Arrival: X marks the spot, with a label
+            routeEnd.innerHTML = "";
+            const [ex, ey] = pts[pts.length - 1];
+            [[-6, -6, 6, 6], [-6, 6, 6, -6]].forEach(([a, b, c, dd]) => {
+                const ln = document.createElementNS(svgNS, "line");
+                ln.setAttribute("x1", ex + a); ln.setAttribute("y1", ey + b);
+                ln.setAttribute("x2", ex + c); ln.setAttribute("y2", ey + dd);
+                routeEnd.appendChild(ln);
+            });
+            const label = document.createElementNS(svgNS, "text");
+            label.setAttribute("x", ex - 14); label.setAttribute("y", ey + 4);
+            label.setAttribute("text-anchor", "end");
+            label.textContent = translations[currentLang]["route.here"];
+            routeEnd.appendChild(label);
+        }
+
+        window.__buildRoute = buildRoute;
+        buildRoute();
+
+        if (typeof gsap !== "undefined" && !prefersReduced) {
+            gsap.fromTo(routeSvg,
+                { clipPath: "inset(0 0 100% 0)" },
+                {
+                    clipPath: "inset(0 0 0% 0)", ease: "none",
+                    scrollTrigger: {
+                        trigger: daylight, start: "top 55%", end: "bottom 75%", scrub: 0.5
+                    }
+                });
+        }
+
+        let routeTimer;
+        window.addEventListener("resize", () => {
+            clearTimeout(routeTimer);
+            routeTimer = setTimeout(() => {
+                buildRoute();
+                if (window.ScrollTrigger) ScrollTrigger.refresh();
+            }, 250);
+        });
+        window.addEventListener("load", () => {
+            buildRoute();
+            if (window.ScrollTrigger) ScrollTrigger.refresh();
+        });
+    }
+
+    /* ================= Nav: mark your position in the crossing ================= */
+    const navLinks = [...document.querySelectorAll(".nav-link")];
+    if ("IntersectionObserver" in window && navLinks.length) {
+        const map = {
+            constellations: "#constellations",
+            instrument: "#instrument",
+            navigator: "#navigator",
+            firstlight: "#firstlight"
+        };
+        const io = new IntersectionObserver(entries => {
+            entries.forEach(en => {
+                if (!en.isIntersecting) return;
+                navLinks.forEach(a =>
+                    a.classList.toggle("active", a.getAttribute("href") === "#" + en.target.id));
+            });
+        }, { rootMargin: "-40% 0px -55% 0px" });
+        Object.keys(map).forEach(id => {
+            const el = document.getElementById(id);
+            if (el) io.observe(el);
+        });
+        const hero = document.getElementById("hero");
+        if (hero) io.observe(hero); // clears highlights back at the top
+        // Observing hero with no matching link naturally deactivates all
+    }
+
     /* ================= Ten-year star chart ================= */
     const range = document.getElementById("amountRange");
     if (range) {
@@ -557,6 +704,7 @@
         const starsG = document.getElementById("chartStars");
         const endG = document.getElementById("chartEndLabel");
         const linePath = document.getElementById("chartLine");
+        const fillPath = document.getElementById("chartFill");
         const dialValue = document.getElementById("dialValue");
         const projValue = document.getElementById("projValue");
 
@@ -632,6 +780,8 @@
                 d += (yr === 0 ? "M" : "L") + x.toFixed(1) + " " + y.toFixed(1) + " ";
             }
             linePath.setAttribute("d", d);
+            fillPath.setAttribute("d",
+                d + "L " + xFor(10).toFixed(1) + " " + yFor(0) + " L " + xFor(0).toFixed(1) + " " + yFor(0) + " Z");
 
             const endY = yFor(m * fvFactor(10));
             const final = m * fvFactor(10);
@@ -640,7 +790,8 @@
             endValue.setAttribute("y", labelY);
             endValue.textContent = fmt(final);
             endSub.setAttribute("x", xFor(10) + 16);
-            endSub.setAttribute("y", labelY + 20);
+            // Near the baseline the sub-label ducks above the value to clear the axis
+            endSub.setAttribute("y", labelY >= T + plotH - 30 ? labelY - 24 : labelY + 20);
             endSub.textContent = translations[currentLang]["instrument.endsub"];
 
             projValue.textContent = fmt(final);
