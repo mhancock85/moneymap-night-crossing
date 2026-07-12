@@ -566,7 +566,7 @@ input[type="range"]::-moz-range-thumb {
     align-items: center;
 }
 
-.about-media { position: relative; max-width: 430px; }
+.about-media { position: relative; }
 
 .about-media .reveal-img { aspect-ratio: 4 / 5; }
 
