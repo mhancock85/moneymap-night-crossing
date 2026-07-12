@@ -15,31 +15,30 @@
     /* ================= i18n ================= */
     const translations = {
         en: {
-            "nav.services": "Services",
+            "nav.services": "How it works",
             "nav.instrument": "Calculator",
             "nav.about": "About",
             "nav.contact": "Contact",
             "nav.cta": "Book a free call",
-            "hero.kicker": "Personal finance coaching · UK & Brazil",
-            "hero.l1": "Where does",
-            "hero.l2": "your money",
-            "hero.l3": "actually go?",
+            "hero.kicker": "One-to-one coaching with Marcia",
+            "hero.l1": "Personal finance",
+            "hero.l2": "coaching for people",
+            "hero.l3": "ready to take control.",
             "hero.desc": "Marcia is a certified personal finance consultant. She helps you build a budget that holds, clear debt faster and start investing, in plain words, with a plan you can actually follow.",
             "hero.cta1": "Book a free call",
-            "hero.cta2": "See how it works",
             "hero.scroll": "Scroll to explore",
-            "services.kicker": "What Marcia helps with",
-            "services.t1": "Four services,",
-            "services.t2": "one plan.",
+            "services.kicker": "Four services, one plan",
+            "services.t1": "How it",
+            "services.t2": "works.",
             "services.sub": "Every client starts in a different place. These are the four areas Marcia covers, and your plan can mix all of them.",
-            "services.1.name": "Budgeting & planning",
-            "services.1.desc": "A realistic spending plan that fits your life now and still protects your long-term goals.",
-            "services.2.name": "Debt management",
-            "services.2.desc": "A clear order for paying off what you owe, so interest stops eating your income.",
-            "services.3.name": "Investing basics",
-            "services.3.desc": "The stock market explained in plain words, and a diversified portfolio you understand.",
-            "services.4.name": "Miles & discounts",
-            "services.4.desc": "Get more from the spending you already do: points, miles and everyday savings.",
+            "services.1.name": "Budgeting & Planning",
+            "services.1.desc": "Create a realistic spending plan that fits your lifestyle while prioritising your long-term goals.",
+            "services.2.name": "Debt Management",
+            "services.2.desc": "Strategies to tackle debt efficiently and regain control of your financial health.",
+            "services.3.name": "Investing Basics",
+            "services.3.desc": "Demystifying the stock market and building a diversified portfolio for future growth.",
+            "services.4.name": "Miles & Discounts",
+            "services.4.desc": "Learn how to maximise rewards, travel for less, and find hidden savings in your daily life.",
             "instrument.kicker": "Try it yourself",
             "instrument.t1": "How much could",
             "instrument.t2": "your money grow?",
@@ -77,31 +76,30 @@
             "footer.credit": "Designed and built by Claude Fable 5"
         },
         pt: {
-            "nav.services": "Serviços",
+            "nav.services": "Como funciona",
             "nav.instrument": "Calculadora",
             "nav.about": "Sobre",
             "nav.contact": "Contato",
             "nav.cta": "Agende uma conversa",
-            "hero.kicker": "Consultoria financeira pessoal · Reino Unido & Brasil",
-            "hero.l1": "Para onde vai",
-            "hero.l2": "o seu dinheiro,",
-            "hero.l3": "de verdade?",
+            "hero.kicker": "Mentoria individual com a Marcia",
+            "hero.l1": "Consultoria financeira",
+            "hero.l2": "para quem quer assumir",
+            "hero.l3": "o controle do dinheiro.",
             "hero.desc": "A Marcia é consultora de finanças pessoais certificada. Ela ajuda você a montar um orçamento que funciona, quitar dívidas mais rápido e começar a investir, em palavras simples e com um plano que dá para seguir.",
             "hero.cta1": "Agende uma conversa",
-            "hero.cta2": "Veja como funciona",
             "hero.scroll": "Role para explorar",
-            "services.kicker": "Como a Marcia ajuda",
-            "services.t1": "Quatro serviços,",
-            "services.t2": "um plano.",
+            "services.kicker": "Quatro serviços, um plano",
+            "services.t1": "Como",
+            "services.t2": "funciona.",
             "services.sub": "Cada cliente começa de um ponto diferente. Estas são as quatro áreas que a Marcia cobre, e o seu plano pode combinar todas elas.",
-            "services.1.name": "Orçamento & planejamento",
-            "services.1.desc": "Um plano de gastos realista, que cabe na sua vida de hoje e ainda protege seus objetivos de longo prazo.",
-            "services.2.name": "Gestão de dívidas",
-            "services.2.desc": "Uma ordem clara para quitar o que você deve, para os juros pararem de corroer a sua renda.",
-            "services.3.name": "Investimentos para iniciantes",
-            "services.3.desc": "O mercado financeiro explicado em palavras simples, e uma carteira diversificada que você entende.",
-            "services.4.name": "Milhas & descontos",
-            "services.4.desc": "Aproveite melhor os gastos que você já tem: pontos, milhas e economias no dia a dia.",
+            "services.1.name": "Orçamento & Planejamento",
+            "services.1.desc": "Crie um plano de gastos realista, que combina com o seu estilo de vida e prioriza seus objetivos de longo prazo.",
+            "services.2.name": "Gestão de Dívidas",
+            "services.2.desc": "Estratégias para quitar dívidas com eficiência e retomar o controle da sua saúde financeira.",
+            "services.3.name": "Investimentos Básicos",
+            "services.3.desc": "O mercado de ações sem mistério, com uma carteira diversificada para crescer no futuro.",
+            "services.4.name": "Milhas & Descontos",
+            "services.4.desc": "Aprenda a maximizar recompensas, viajar gastando menos e encontrar economias escondidas no dia a dia.",
             "instrument.kicker": "Experimente",
             "instrument.t1": "Quanto o seu dinheiro",
             "instrument.t2": "poderia crescer?",
@@ -280,16 +278,20 @@
             // Initial states set from JS so no-JS visitors see everything
             gsap.set(".reveal", { opacity: 0, y: 34 });
             gsap.set(".hero-title .line-inner", { yPercent: 115 });
-            gsap.set(".hero-kicker, .hero-desc, .hero-ctas, .hero-scroll", { opacity: 0 });
+            gsap.set(".hero-kicker, .hero-desc, .btn-hero, .hero-scroll", { opacity: 0 });
+            gsap.set(".hero-media", { opacity: 0, y: 26 });
 
             // Hero entrance, straight in: no loader
             gsap.timeline({ delay: 0.15 })
                 .to(".hero-title .line-inner", {
                     yPercent: 0, duration: 1.1, stagger: 0.12, ease: "power3.out"
                 })
-                .to(".hero-kicker, .hero-desc, .hero-ctas, .hero-scroll", {
+                .to(".hero-media", {
+                    opacity: 1, y: 0, duration: 1.1, ease: "power3.out"
+                }, "-=0.85")
+                .to(".hero-kicker, .hero-desc, .btn-hero, .hero-scroll", {
                     opacity: 1, y: 0, duration: 0.9, stagger: 0.09, ease: "power2.out"
-                }, "-=0.7");
+                }, "-=0.8");
 
             // Scroll reveals
             gsap.utils.toArray(".reveal").forEach(el => {
@@ -315,23 +317,14 @@
                     });
             });
 
-            // Service diagrams: stroke-draw + star pop, once, on enter
-            document.querySelectorAll(".constellation").forEach(svg => {
-                const line = svg.querySelector(".c-line");
-                const len = line.getTotalLength();
-                gsap.set(line, { strokeDasharray: len, strokeDashoffset: len });
-                gsap.set(svg.querySelectorAll(".c-star"), { scale: 0, transformOrigin: "center" });
-
-                ScrollTrigger.create({
-                    trigger: svg, start: "top 84%",
-                    onEnter: () => {
-                        gsap.to(line, { strokeDashoffset: 0, duration: 1.6, ease: "power2.inOut" });
-                        gsap.to(svg.querySelectorAll(".c-star"), {
-                            scale: 1, duration: 0.5, stagger: 0.12, ease: "back.out(2.5)", delay: 0.2
-                        });
-                    },
-                    once: true
-                });
+            // Service icons: gentle pop as each card reveals
+            document.querySelectorAll(".service-icon").forEach(icon => {
+                gsap.fromTo(icon,
+                    { scale: 0.4, opacity: 0 },
+                    {
+                        scale: 1, opacity: 1, duration: 0.7, ease: "back.out(2)",
+                        scrollTrigger: { trigger: icon, start: "top 86%" }
+                    });
             });
         } else {
             gsap.set(".reveal", { opacity: 1, y: 0 });
@@ -386,12 +379,16 @@
         const fvFactor = years => ((Math.pow(1 + i, years * 12) - 1) / i) * (1 + i);
         const Y_MAX = 1000 * fvFactor(10) * 1.04; // headroom above max slider value
 
-        const fmt = v => "£" + Math.round(v).toLocaleString(currentLang === "pt" ? "pt-BR" : "en-GB");
+        // $ for English, R$ for Portuguese (per Marcia's brief)
+        const sym = () => currentLang === "pt" ? "R$" : "$";
+        const fmt = v => sym() + Math.round(v).toLocaleString(currentLang === "pt" ? "pt-BR" : "en-US");
 
         const xFor = year => L + (year / 10) * plotW;
         const yFor = value => T + plotH - (value / Y_MAX) * plotH;
 
         // Static grid: three horizontal references + year labels
+        // Money labels re-render on language change (currency symbol switches)
+        const moneyLabels = [];
         [50000, 100000, 150000].forEach(v => {
             const gl = document.createElementNS(svgNS, "line");
             gl.setAttribute("x1", L); gl.setAttribute("x2", W - R + 40);
@@ -402,9 +399,22 @@
             tx.setAttribute("x", L - 8); tx.setAttribute("y", yFor(v) + 4);
             tx.setAttribute("text-anchor", "end");
             tx.setAttribute("class", "chart-gridlabel");
-            tx.textContent = "£" + (v / 1000) + "k";
             gridG.appendChild(tx);
+            moneyLabels.push({ el: tx, v });
         });
+
+        const dialScale = document.getElementById("dialScale");
+        let lastSym = "";
+        function syncCurrencyLabels() {
+            const s = sym();
+            if (s === lastSym) return;
+            lastSym = s;
+            moneyLabels.forEach(m => { m.el.textContent = s + (m.v / 1000) + "k"; });
+            if (dialScale) {
+                dialScale.innerHTML = ["0", "250", "500", "750", "1k"]
+                    .map(v => "<span>" + s + v + "</span>").join("");
+            }
+        }
         [0, 5, 10].forEach(yr => {
             const tx = document.createElementNS(svgNS, "text");
             tx.setAttribute("x", xFor(yr)); tx.setAttribute("y", H - 18);
@@ -440,6 +450,7 @@
         const state = { amount: Number(range.value), shown: Number(range.value) };
 
         function renderChart(instant) {
+            syncCurrencyLabels();
             const m = state.shown;
             let d = "";
             for (let yr = 0; yr <= 10; yr++) {
