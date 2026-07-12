@@ -566,9 +566,9 @@ input[type="range"]::-moz-range-thumb {
     align-items: center;
 }
 
-.about-media { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; align-items: start; }
+.about-media { position: relative; max-width: 430px; }
 
-.about-media-offset { margin-top: 3.5rem; }
+.about-media .reveal-img { aspect-ratio: 4 / 5; }
 
 .about-badge {
     position: absolute;
@@ -693,8 +693,6 @@ input[type="range"]::-moz-range-thumb {
 @media (max-width: 620px) {
     .service-grid { grid-template-columns: 1fr; }
     .contact-form { grid-template-columns: 1fr; }
-    .about-media { grid-template-columns: 1fr; }
-    .about-media-offset { margin-top: 0; }
     .btn-nav { display: none; }
     .hero-scroll { display: none; }
 }
